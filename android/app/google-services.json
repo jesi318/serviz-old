@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "827323694886",
+    "project_id": "serviz-52296",
+    "storage_bucket": "serviz-52296.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827323694886:android:f77f6e78084baef7084be7",
+        "android_client_info": {
+          "package_name": "com.example.serviz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827323694886-ilr02gnt5qsc8b5ctu96m3ekc3fnjqk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3badBs9mf_NPCWIjoREAHYmqd_E6m7D4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827323694886-ilr02gnt5qsc8b5ctu96m3ekc3fnjqk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
