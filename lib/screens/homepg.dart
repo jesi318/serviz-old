@@ -8,19 +8,20 @@ import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-  final String week = "Week";
+  final String week = "Week ";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(),
       drawer: NavigationDrawer(),
+      backgroundColor: AppColors.grey_background,
       body: Container(
         height: MediaQuery.of(context).size.height - 10,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
-          color: Color(0xFFF5F5F5),
+          color: AppColors.grey_background,
         ),
         child: ListView.builder(
             physics: BouncingScrollPhysics(),
@@ -33,6 +34,7 @@ class HomePage extends StatelessWidget {
                   child: Container(
                     child: SingleChildScrollView(
                       child: Card(
+                        color: AppColors.yellow_accent,
                         elevation: 5.0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
@@ -41,6 +43,9 @@ class HomePage extends StatelessWidget {
                           height: MediaQuery.of(context).size.height * (1 / 6),
                           padding: EdgeInsets.symmetric(
                               horizontal: 10.0, vertical: 10.0),
+                          decoration: BoxDecoration(
+                              color: AppColors.yellow_accent,
+                              borderRadius: BorderRadius.circular(20)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,10 +58,10 @@ class HomePage extends StatelessWidget {
                                     Align(
                                       alignment: AlignmentDirectional.center,
                                       child: Container(
-                                        width: 55.0,
-                                        height: 55.0,
+                                        width: 60.0,
+                                        height: 60.0,
                                         decoration: BoxDecoration(
-                                            color: Color(0xFFF5F5F5),
+                                            color: AppColors.grey_background,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(20))),
                                         child: Container(
@@ -77,8 +82,8 @@ class HomePage extends StatelessWidget {
                                         Container(
                                           width: 100,
                                           child: Text(
-                                            "Name",
-                                            style: TextStyle(
+                                            week + '${index + 1}',
+                                            style: GoogleFonts.poppins(
                                                 color: Colors.black,
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.bold),
@@ -90,7 +95,7 @@ class HomePage extends StatelessWidget {
                                           alignment:
                                               AlignmentDirectional.bottomEnd,
                                           child: Text("Text",
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Colors.black,
                                                   fontSize: 15.0,
                                                   fontWeight:
