@@ -8,7 +8,7 @@ appRoutes() => [
         name: '/createjoingroup',
         page: () => CreateJoinGroupScreen(),
         middlewares: [MyMiddelware()],
-        transition: Transition.leftToRightWithFade,
+        transition: Transition.rightToLeftWithFade,
         transitionDuration: Duration(milliseconds: 500),
       ),
     ];

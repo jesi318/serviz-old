@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -14,11 +15,16 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
+          children: <Widget>[
             Text(
               'Welcome to Serviz!',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Get.toNamed('/createjoingroup');
+                },
+                child: Text('Continue'))
           ],
         ),
       ),
