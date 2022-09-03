@@ -35,7 +35,7 @@ class CreateJoinGroupScreen extends StatelessWidget {
                 Bounce(
                   duration: Duration(milliseconds: 100),
                   onPressed: () {
-                    //on pressed navigation
+                    Get.toNamed('/creategroupform');
                   },
                   child: Container(
                     width: 300,
