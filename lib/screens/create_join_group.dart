@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
+import 'package:get/get.dart';
 
 class CreateJoinGroupScreen extends StatelessWidget {
   const CreateJoinGroupScreen({super.key});
@@ -30,62 +32,74 @@ class CreateJoinGroupScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  width: 300,
-                  height: 200,
-                  decoration: BoxDecoration(
-                      color: AppColors.yellow_accent,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 3,
-                            blurRadius: 10,
-                            offset: Offset(0, 3))
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Create Group',
-                          style: GoogleFonts.poppins(
-                            color: AppColors.grey_background,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 35,
+                Bounce(
+                  duration: Duration(milliseconds: 100),
+                  onPressed: () {
+                    //on pressed navigation
+                  },
+                  child: Container(
+                    width: 300,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: AppColors.yellow_accent,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 10,
+                              offset: Offset(0, 3))
+                        ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Create Group',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.grey_background,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 35,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  width: 300,
-                  height: 200,
-                  decoration: BoxDecoration(
-                      color: AppColors.yellow_accent,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 3,
-                            blurRadius: 10,
-                            offset: Offset(0, 3))
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Join Group',
-                          style: GoogleFonts.poppins(
-                              color: AppColors.grey_background,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 35),
-                        ),
-                      ],
+                Bounce(
+                  duration: Duration(milliseconds: 100),
+                  onPressed: () {
+                    Get.toNamed('/joingroupform');
+                  },
+                  child: Container(
+                    width: 300,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: AppColors.yellow_accent,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 10,
+                              offset: Offset(0, 3))
+                        ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Join Group',
+                            style: GoogleFonts.poppins(
+                                color: AppColors.grey_background,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 35),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
