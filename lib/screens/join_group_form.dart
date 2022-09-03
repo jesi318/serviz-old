@@ -3,12 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 
-class CreateGroupForm extends StatefulWidget {
+class JoinGroupForm extends StatefulWidget {
   @override
-  State<CreateGroupForm> createState() => _CreateGroupFormState();
+  State<JoinGroupForm> createState() => _JoinGroupFormState();
 }
 
-class _CreateGroupFormState extends State<CreateGroupForm> {
+class _JoinGroupFormState extends State<JoinGroupForm> {
   final _textController = TextEditingController();
   FocusNode myFocusNode = new FocusNode();
 
