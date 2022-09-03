@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/drawer/drawer.dart';
@@ -66,17 +67,9 @@ class HomePage extends StatelessWidget {
                                       Align(
                                         alignment: AlignmentDirectional.center,
                                         child: Container(
-                                          width: 60.0,
-                                          height: 60.0,
-                                          decoration: BoxDecoration(
-                                              color: AppColors.grey_background,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                          child: Container(
-                                            width: 55.0,
                                             height: 55.0,
-                                          ),
-                                        ),
+                                            child: Image.asset(
+                                                "assets/icons/checked.png")),
                                       ),
                                       SizedBox(
                                         width: 17,
@@ -99,15 +92,29 @@ class HomePage extends StatelessWidget {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional.bottomEnd,
-                                            child: Text("Text",
-                                                style: GoogleFonts.poppins(
-                                                    color: Colors.black,
-                                                    fontSize: 15.0,
-                                                    fontWeight:
-                                                        FontWeight.normal)),
+                                          Row(
+                                            children: [
+                                              Align(
+                                                alignment: AlignmentDirectional
+                                                    .bottomEnd,
+                                                child: Text("Status :  ",
+                                                    style: GoogleFonts.poppins(
+                                                        color: Colors.black,
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                            FontWeight.normal)),
+                                              ),
+                                              Align(
+                                                alignment: AlignmentDirectional
+                                                    .bottomEnd,
+                                                child: Text("Approved",
+                                                    style: GoogleFonts.poppins(
+                                                        color: Colors.green,
+                                                        fontSize: 15.0,
+                                                        fontWeight:
+                                                            FontWeight.normal)),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),

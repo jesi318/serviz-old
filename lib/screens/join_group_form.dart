@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -36,19 +37,22 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
               Bounce(
                 duration: Duration(milliseconds: 110),
                 onPressed: () {
+                  Get.toNamed('/home');
                   //What to do on pressed
                 },
                 child: Container(
-                  padding: EdgeInsets.only(
-                      left: 100, right: 100, top: 20, bottom: 20),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 1 / 10,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: AppColors.yellow_accent),
-                  child: Text(
-                    'Join',
-                    style: GoogleFonts.poppins(
-                        color: AppColors.black_background,
-                        fontWeight: FontWeight.bold),
+                  child: Center(
+                    child: Text(
+                      'Join',
+                      style: GoogleFonts.poppins(
+                          color: AppColors.black_background,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
