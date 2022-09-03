@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^3.0.1
   get: ^4.6.5
   flutter_bounce: ^1.1.0
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   flutter_test:
