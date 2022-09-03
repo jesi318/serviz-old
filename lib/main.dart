@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:serviz/routes.dart';
 import 'screens/create_join_group.dart';
 
 void main() {
@@ -11,14 +13,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'serviz',
-      theme: ThemeData(
-        
-      ),
-      home: create_join_group(),
+      initialRoute: '/createjoingroup',
+      getPages: appRoutes(),
     );
   }
 }
-

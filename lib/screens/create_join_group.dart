@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class create_join_group extends StatelessWidget {
-  const create_join_group({super.key});
+class CreateJoinGroupScreen extends StatelessWidget {
+  const CreateJoinGroupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
