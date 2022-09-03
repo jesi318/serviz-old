@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:serviz/utils/colors.dart';
+import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/drawer/drawer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
+  final String week = "Week";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        centerTitle: true,
-        title: Text('Serviz'),
-        foregroundColor: Colors.black,
-      ),
+      appBar: MyAppBar(),
       drawer: NavigationDrawer(),
       body: Container(
         height: MediaQuery.of(context).size.height - 10,
@@ -26,7 +24,7 @@ class HomePage extends StatelessWidget {
         ),
         child: ListView.builder(
             physics: BouncingScrollPhysics(),
-            itemCount: 4,
+            itemCount: 8,
             shrinkWrap: false,
             itemBuilder: (BuildContext context, index) => Container(
                   width: MediaQuery.of(context).size.width,
