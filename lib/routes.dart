@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:serviz/screens/create_join_group.dart';
+import 'package:serviz/screens/homepg.dart';
 import 'package:serviz/screens/welcome_screen.dart';
 
 appRoutes() => [
@@ -11,6 +12,7 @@ appRoutes() => [
         transition: Transition.rightToLeftWithFade,
         transitionDuration: Duration(milliseconds: 500),
       ),
+      GetPage(name: '/home', page: () => HomePage())
     ];
 
 class MyMiddelware extends GetMiddleware {
