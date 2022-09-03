@@ -21,11 +21,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'serviz',
-<<<<<<< Updated upstream
       initialRoute: '/welcome',
-=======
-      initialRoute: '/home',
->>>>>>> Stashed changes
       getPages: appRoutes(),
     );
   }
