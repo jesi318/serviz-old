@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:serviz/screens/create_group_form.dart';
 import 'package:serviz/screens/create_join_group.dart';
 import 'package:serviz/screens/homepg.dart';
 import 'package:serviz/screens/welcome_screen.dart';
@@ -12,7 +13,8 @@ appRoutes() => [
         transition: Transition.rightToLeftWithFade,
         transitionDuration: Duration(milliseconds: 500),
       ),
-      GetPage(name: '/home', page: () => HomePage())
+      GetPage(name: '/home', page: () => HomePage()),
+      GetPage(name: '/creategroupform', page: () => CreateGroupForm())
     ];
 
 class MyMiddelware extends GetMiddleware {

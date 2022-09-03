@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/drawer/drawer.dart';
@@ -31,85 +32,93 @@ class HomePage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   padding:
                       EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                  child: Container(
-                    child: SingleChildScrollView(
-                      child: Card(
-                        color: AppColors.yellow_accent,
-                        elevation: 5.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * (1 / 6),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10.0),
-                          decoration: BoxDecoration(
-                              color: AppColors.yellow_accent,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Align(
-                                      alignment: AlignmentDirectional.center,
-                                      child: Container(
-                                        width: 60.0,
-                                        height: 60.0,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.grey_background,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
+                  child: Bounce(
+                    duration: Duration(milliseconds: 100),
+                    onPressed: () {
+                      //on Pressed Code
+                    },
+                    child: Container(
+                      child: SingleChildScrollView(
+                        child: Card(
+                          color: AppColors.yellow_accent,
+                          elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0)),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height:
+                                MediaQuery.of(context).size.height * (1 / 6),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 10.0),
+                            decoration: BoxDecoration(
+                                color: AppColors.yellow_accent,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional.centerStart,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Align(
+                                        alignment: AlignmentDirectional.center,
                                         child: Container(
-                                          width: 55.0,
-                                          height: 55.0,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 17,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        Container(
-                                          width: 100,
-                                          child: Text(
-                                            week + '${index + 1}',
-                                            style: GoogleFonts.poppins(
-                                                color: Colors.black,
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold),
-                                            maxLines: 4,
-                                            overflow: TextOverflow.ellipsis,
+                                          width: 60.0,
+                                          height: 60.0,
+                                          decoration: BoxDecoration(
+                                              color: AppColors.grey_background,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                          child: Container(
+                                            width: 55.0,
+                                            height: 55.0,
                                           ),
                                         ),
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional.bottomEnd,
-                                          child: Text("Text",
+                                      ),
+                                      SizedBox(
+                                        width: 17,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Container(
+                                            width: 100,
+                                            child: Text(
+                                              week + '${index + 1}',
                                               style: GoogleFonts.poppins(
                                                   color: Colors.black,
-                                                  fontSize: 15.0,
-                                                  fontWeight:
-                                                      FontWeight.normal)),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold),
+                                              maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional.bottomEnd,
+                                            child: Text("Text",
+                                                style: GoogleFonts.poppins(
+                                                    color: Colors.black,
+                                                    fontSize: 15.0,
+                                                    fontWeight:
+                                                        FontWeight.normal)),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

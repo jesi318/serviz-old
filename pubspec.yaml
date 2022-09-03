@@ -37,6 +37,7 @@ dependencies:
   firebase_core: ^1.21.1
   google_fonts: ^3.0.1
   get: ^4.6.5
+  flutter_bounce: ^1.1.0
 
 dev_dependencies:
   flutter_test:
