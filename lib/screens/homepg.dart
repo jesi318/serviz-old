@@ -25,6 +25,7 @@ class HomePage extends StatelessWidget {
           color: Color(0xFFF5F5F5),
         ),
         child: ListView.builder(
+            physics: BouncingScrollPhysics(),
             itemCount: 4,
             shrinkWrap: false,
             itemBuilder: (BuildContext context, index) => Container(
