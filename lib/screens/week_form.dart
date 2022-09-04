@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -88,7 +89,7 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
                             child: Container(
                                 child: dottedBorder(context),
                                 height:
-                                    MediaQuery.of(context).size.height * 0.5,
+                                    MediaQuery.of(context).size.height * 0.3,
                                 width: MediaQuery.of(context).size.width - 80,
                                 decoration: BoxDecoration(
                                     color: AppColors.black_background,
@@ -123,6 +124,41 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
                         ),
                         duration: Duration(milliseconds: 110),
                         onPressed: () {}),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(70, 0, 70, 0),
+                    child: Bounce(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 100,
+                          height: MediaQuery.of(context).size.height * 1 / 10,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: AppColors.red_text),
+                          child: Center(
+                            child: Text(
+                              'Clear',
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.black_background,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        duration: Duration(milliseconds: 110),
+                        onPressed: () {
+                          setState(() {
+                            pickedFile = null;
+                          });
+                        }),
                   ),
                 ),
               ],
