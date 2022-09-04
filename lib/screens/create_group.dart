@@ -17,13 +17,15 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   final groupNameEditingController = new TextEditingController();
   final classEditingController = new TextEditingController();
   // focus node
-  FocusNode myFocusNode = new FocusNode();
+  FocusNode grpmyFocusNode = new FocusNode();
+  FocusNode classmyFocusNode = new FocusNode();
+  //FocusNode myFocusNode = new FocusNode();
 
   @override
   Widget build(BuildContext context) {
     // group name field
     final groupNameField = TextFormField(
-      focusNode: myFocusNode,
+      focusNode: grpmyFocusNode,
       cursorColor: AppColors.yellow_accent,
       autofocus: false,
       controller: groupNameEditingController,
@@ -61,16 +63,16 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         labelStyle: GoogleFonts.poppins(
-          color: myFocusNode.hasFocus
+          color: grpmyFocusNode.hasFocus
               ? AppColors.yellow_accent
               : AppColors.white_text,
         ),
       ),
     );
 
-    // group name field
+    // class name field
     final classNameField = TextFormField(
-      focusNode: myFocusNode,
+      focusNode: classmyFocusNode,
       cursorColor: AppColors.yellow_accent,
       autofocus: false,
       controller: classEditingController,
@@ -91,7 +93,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       ),
       decoration: InputDecoration(
         prefixIcon: Icon(
-          Icons.group,
+          Icons.class_rounded,
           color: AppColors.yellow_accent,
         ),
         contentPadding: EdgeInsets.fromLTRB(10, 15, 20, 15),
@@ -104,7 +106,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
           borderRadius: BorderRadius.circular(20),
         ),
         labelStyle: GoogleFonts.poppins(
-          color: myFocusNode.hasFocus
+          color: classmyFocusNode.hasFocus
               ? AppColors.yellow_accent
               : AppColors.white_text,
         ),
@@ -125,8 +127,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         child: Text(
           'Create',
           textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(
+              fontSize: 20,
+              color: AppColors.black_background,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -137,6 +141,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       backgroundColor: AppColors.grey_background,
       body: Center(
         child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height,
             child: Padding(
