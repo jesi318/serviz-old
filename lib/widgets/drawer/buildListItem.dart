@@ -57,6 +57,10 @@ Widget buildListItems(BuildContext context) {
       SizedBox(
         height: 60,
       ),
+      Divider(
+        height: 20,
+        thickness: 2,
+      ),
       ListTile(
         leading: Icon(
           Icons.lightbulb,
@@ -67,7 +71,6 @@ Widget buildListItems(BuildContext context) {
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.normal, color: AppColors.yellow_accent),
         ),
-        onTap: () {},
       ),
       SizedBox(
         height: 30,
