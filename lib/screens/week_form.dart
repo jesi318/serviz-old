@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,13 +13,21 @@ import 'package:serviz/controllers/imagePicker_controller.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 
-class UploadWeekForm extends StatelessWidget {
+class UploadWeekForm extends StatefulWidget {
   UploadWeekForm({Key? key}) : super(key: key);
 
-  File? pickedFile;
+  @override
+  State<UploadWeekForm> createState() => _UploadWeekFormState();
+}
+
+class _UploadWeekFormState extends State<UploadWeekForm> {
+  File? image;
+
   ImagePicker imagePicker = ImagePicker();
+
   ImagePickerController imagePickerController =
       Get.put(ImagePickerController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,24 +36,89 @@ class UploadWeekForm extends StatelessWidget {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 19,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  // width: MediaQuery.of(context).size.width,
+                  // height: MediaQuery.of(context).size.height * 1 / 10,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      "Your Weekly Report",
+                      style: GoogleFonts.poppins(
+                          color: AppColors.white_text, fontSize: 27),
+                    ),
+                  ),
+                )
+              ],
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
+                Obx(() => imagePickerController.selectedImagePath.value == ''
+                    ? Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: Container(
+                                child: dottedBorder(context),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                width: MediaQuery.of(context).size.width - 80,
+                                decoration: BoxDecoration(
+                                    color: AppColors.black_background,
+                                    borderRadius: BorderRadius.circular(12)))),
+                      )
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            width: MediaQuery.of(context).size.width - 80,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.file(
+                                File(imagePickerController
+                                    .selectedImagePath.value),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: AlignmentDirectional.center,
                   child: Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: Obx(
-                      () => ImagePickerController().selectedImagePath.value ==
-                              ''
-                          ? Container(
-                              child: dottedBorder(context),
-                              height: MediaQuery.of(context).size.height * 0.5,
-                              width: MediaQuery.of(context).size.width - 80,
-                              decoration: BoxDecoration(
-                                  color: AppColors.black_background,
-                                  borderRadius: BorderRadius.circular(12)))
-                          : Image.file(File(
-                              ImagePickerController().selectedImagePath.value)),
+                    padding: const EdgeInsets.only(left: 25),
+                    child: Expanded(
+                      child: Bounce(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 50,
+                            height: MediaQuery.of(context).size.height * 1 / 10,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: AppColors.yellow_accent),
+                            child: Center(
+                              child: Text(
+                                'Upload Image',
+                                style: GoogleFonts.poppins(
+                                    color: AppColors.black_background,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          duration: Duration(milliseconds: 110),
+                          onPressed: () {}),
                     ),
                   ),
                 )
@@ -122,7 +197,7 @@ class UploadWeekForm extends StatelessWidget {
                   ],
                 ),
                 onTap: (() {
-                  ImagePickerController().getImage(ImageSource.gallery);
+                  imagePickerController.getImage(ImageSource.gallery);
                 }),
               ),
               SizedBox(
@@ -142,7 +217,7 @@ class UploadWeekForm extends StatelessWidget {
                   ],
                 ),
                 onTap: (() {
-                  ImagePickerController().getImage(ImageSource.camera);
+                  imagePickerController.getImage(ImageSource.camera);
                 }),
               ),
             ],
@@ -152,11 +227,21 @@ class UploadWeekForm extends StatelessWidget {
     );
   }
 
-  // Future<void> takePhoto(ImageSource source) async {
-  //   final pickedImage =
-  //       await imagePicker.pickImage(source: source, imageQuality: 100);
+  Future PickImage(ImageSource source) async {
+    try {
+      final image =
+          await imagePicker.pickImage(source: source, imageQuality: 100);
 
-  //   pickedFile = File(pickedImage!.path);
-  //   imagePickerController.setImagePath(pickedFile!.path);
-  // }
+      if (image == null) {
+        return;
+      }
+      final imageTemporary = File(image.path);
+
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } on PlatformException catch (e) {
+      print("Failed to pick image : $e");
+    }
+  }
 }
