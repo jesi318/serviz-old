@@ -39,8 +39,8 @@ dependencies:
   get: ^4.6.5
   flutter_bounce: ^1.1.0
   percent_indicator: ^4.2.2
-  image_picker: ^0.8.5+3
   dotted_border: ^2.0.0+2
+  file_picker: ^5.0.1
 
 dev_dependencies:
   flutter_test:
