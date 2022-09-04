@@ -134,18 +134,18 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     return Scaffold(
       appBar: MyBackAppBar(),
       drawer: NavigationDrawer(),
+      backgroundColor: AppColors.grey_background,
       body: Center(
         child: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
-            color: AppColors.grey_background,
             child: Padding(
               padding: EdgeInsets.all(35),
               child: Form(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    SizedBox(height: 150),
                     groupNameField,
                     SizedBox(height: 60),
                     classNameField,

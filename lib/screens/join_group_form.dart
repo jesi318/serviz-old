@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:serviz/widgets/appbar.dart';
 
 class JoinGroupForm extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyBackAppBar(),
       backgroundColor: AppColors.grey_background,
       body: Container(
         child: Padding(
