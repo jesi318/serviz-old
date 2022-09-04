@@ -69,6 +69,11 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
         focusNode: myFocusNode,
         cursorColor: AppColors.yellow_accent,
         controller: _textController,
+        textInputAction: TextInputAction.next,
+        style: GoogleFonts.poppins(
+          color: AppColors.white_text,
+          fontWeight: FontWeight.bold,
+        ),
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.white_text),

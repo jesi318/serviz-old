@@ -9,10 +9,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/widgets/progress_widget.dart';
 import 'package:serviz/widgets/widget_card.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
   final String week = "Week";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +31,10 @@ class HomePage extends StatelessWidget {
             Expanded(
                 child: ListView.builder(
                     physics: BouncingScrollPhysics(),
-                    reverse: true,
+                    reverse: false,
                     itemCount: 8,
                     itemBuilder: (context, index) {
-                      return WidgetCard(week: "Week" + '${index + 1}');
+                      return WidgetCard(week: "Week" + '${index - 8}');
                     }))
           ],
         ));

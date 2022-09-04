@@ -3,6 +3,7 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:get/get.dart';
+import 'package:serviz/widgets/appbar.dart';
 
 class CreateJoinGroupScreen extends StatelessWidget {
   const CreateJoinGroupScreen({super.key});
@@ -16,9 +17,28 @@ class CreateJoinGroupScreen extends StatelessWidget {
         children: [
           Container(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [],
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.design_services_rounded,
+                  size: 40,
+                  color: AppColors.grey_background,
+                ),
+                Text('servi',
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.black_background,
+                        fontSize: 40)),
+                Text('z',
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.grey_background,
+                        fontSize: 40))
+              ],
             ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.055,
           ),
           Container(
             height: MediaQuery.of(context).size.height * 0.8,

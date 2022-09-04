@@ -14,7 +14,7 @@ PreferredSizeWidget MyAppBar() {
     centerTitle: true,
     title: Text(
       'Serviz',
-      style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 25),
+      style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 40),
     ),
     foregroundColor: Colors.black,
   );
@@ -51,7 +51,10 @@ PreferredSizeWidget MyBackAppBar() {
   return AppBar(
     leading: Builder(builder: (context) {
       return IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: Icon(
+          Icons.arrow_back_rounded,
+          color: AppColors.black_background,
+        ),
         onPressed: () {
           Get.back();
         },
