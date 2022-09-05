@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
@@ -114,23 +115,26 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     );
 
     //signup button
-    final createButton = Material(
-      elevation: 5,
-      borderRadius: BorderRadius.circular(30),
-      color: AppColors.yellow_accent,
-      child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(10, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: (() {
-          Get.toNamed('/home');
-        }),
-        child: Text(
-          'Create',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.poppins(
-              fontSize: 20,
-              color: AppColors.black_background,
-              fontWeight: FontWeight.bold),
+    final createButton = Bounce(
+      duration: Duration(milliseconds: 110),
+      onPressed: () {
+        Get.toNamed('/home');
+        //What to do on pressed
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 1 / 15,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            color: AppColors.yellow_accent),
+        child: Center(
+          child: Text(
+            'Create',
+            style: GoogleFonts.poppins(
+                color: AppColors.black_background,
+                fontWeight: FontWeight.bold,
+                fontSize: 15),
+          ),
         ),
       ),
     );
