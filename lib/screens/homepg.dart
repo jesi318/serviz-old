@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -17,6 +18,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final String week = "Week";
 
+  ScrollController? _controller;
+
+  @override
+  void initState() {
+    _controller = ScrollController();
+
+    SchedulerBinding.instance.addPostFrameCallback(
+      (_) {
+        _controller?.jumpTo(
+          _controller!.position.maxScrollExtent,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,11 +46,12 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
                 child: ListView.builder(
+                    controller: _controller,
                     physics: BouncingScrollPhysics(),
-                    reverse: false,
-                    itemCount: 8,
+                    reverse: true,
+                    itemCount: 57,
                     itemBuilder: (context, index) {
-                      return WidgetCard(week: "Week" + '${index - 8}');
+                      return WidgetCard(week: "Week" + '${index + 1}');
                     }))
           ],
         ));
