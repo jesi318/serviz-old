@@ -44,7 +44,7 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 1 / 10,
+                  height: MediaQuery.of(context).size.height * 1 / 15,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: AppColors.yellow_accent),
@@ -53,7 +53,8 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
                       'Join',
                       style: GoogleFonts.poppins(
                           color: AppColors.black_background,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
                     ),
                   ),
                 ),
