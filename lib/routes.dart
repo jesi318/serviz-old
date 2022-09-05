@@ -21,11 +21,8 @@ appRoutes() => [
       GetPage(name: '/joingroupform', page: () => JoinGroupForm()),
       GetPage(name: '/creategroupform', page: () => CreateGroupScreen()),
       GetPage(name: '/weekform', page: () => UploadWeekForm()),
-<<<<<<< HEAD
-      GetPage(name: '/login', page: () => LoginPage())
-=======
+      GetPage(name: '/login', page: () => LoginPage()),
       GetPage(name: '/signup', page: () => SignUpPage()),
->>>>>>> 729752f1dd756050bdb50dbc12f2015255954fd1
     ];
 
 class MyMiddelware extends GetMiddleware {

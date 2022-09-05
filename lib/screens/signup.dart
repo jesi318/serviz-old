@@ -99,7 +99,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             onPressed: () {},
                             child: Bounce(
                               duration: Duration(milliseconds: 100),
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed('/login');
+                              },
                               child: Text(
                                 'Already have an account?',
                                 style: GoogleFonts.poppins(

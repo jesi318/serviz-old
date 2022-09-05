@@ -85,10 +85,16 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 15),
                       TextButton(
                         onPressed: () {},
-                        child: Text(
-                          "Create new account?",
-                          style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold, fontSize: 12),
+                        child: Bounce(
+                          duration: Duration(milliseconds: 100),
+                          onPressed: () {
+                            Get.toNamed('/signup');
+                          },
+                          child: Text(
+                            "Create new account?",
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
                         ),
                       )
                     ],
