@@ -49,9 +49,9 @@ class _HomePageState extends State<HomePage> {
                     controller: _controller,
                     physics: BouncingScrollPhysics(),
                     reverse: true,
-                    itemCount: 57,
+                    itemCount: 15,
                     itemBuilder: (context, index) {
-                      return WidgetCard(week: "Week" + '${index + 1}');
+                      return WidgetCard(week: "Week " + '${index + 1}');
                     }))
           ],
         ));

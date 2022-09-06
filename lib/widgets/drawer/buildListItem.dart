@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
 
@@ -71,6 +72,24 @@ Widget buildListItems(BuildContext context) {
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.normal, color: AppColors.yellow_accent),
         ),
+        onTap: () {},
+      ),
+      SizedBox(
+        height: 30,
+      ),
+      ListTile(
+        leading: Icon(
+          Icons.group_work_rounded,
+          color: AppColors.yellow_accent,
+        ),
+        title: Text(
+          'My Group',
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.normal, color: AppColors.yellow_accent),
+        ),
+        onTap: () {
+          Get.toNamed('/mygroupform');
+        },
       ),
       SizedBox(
         height: 30,
