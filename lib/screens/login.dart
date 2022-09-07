@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                       Bounce(
                         duration: Duration(milliseconds: 110),
                         onPressed: () {
-                          Get.toNamed('/createjoingroup');
+                          Get.offAllNamed('/createjoingroup');
                           //What to do on pressed
                         },
                         child: Container(

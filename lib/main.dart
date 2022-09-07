@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'serviz',
-      initialRoute: '/createjoingroup',
+      initialRoute: '/login',
       getPages: appRoutes(),
     );
   }

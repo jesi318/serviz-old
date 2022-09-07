@@ -72,7 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         Bounce(
                           duration: Duration(milliseconds: 110),
                           onPressed: () {
-                            Get.toNamed('/createjoingroup');
+                            Get.offAllNamed('/createjoingroup');
                             //What to do on pressed
                           },
                           child: Center(
@@ -193,6 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
         focusNode: regnomyFocusNode,
         cursorColor: AppColors.yellow_accent,
         controller: _regnotextController,
+        keyboardType: TextInputType.number,
         textInputAction: TextInputAction.next,
         style: GoogleFonts.poppins(
           color: AppColors.white_text,
@@ -232,6 +233,7 @@ class _SignUpPageState extends State<SignUpPage> {
         focusNode: emailidmyFocusNode,
         cursorColor: AppColors.yellow_accent,
         controller: _emailidtextController,
+        keyboardType: TextInputType.name,
         textInputAction: TextInputAction.next,
         style: GoogleFonts.poppins(
           color: AppColors.white_text,
@@ -244,7 +246,7 @@ class _SignUpPageState extends State<SignUpPage> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.yellow_accent),
               borderRadius: BorderRadius.circular(20)),
-          labelText: 'Email',
+          labelText: 'Class',
           labelStyle: GoogleFonts.poppins(
             color: emailidmyFocusNode.hasFocus
                 ? AppColors.yellow_accent
@@ -297,7 +299,7 @@ class _SignUpPageState extends State<SignUpPage> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.yellow_accent),
               borderRadius: BorderRadius.circular(20)),
-          labelText: ' New Password',
+          labelText: 'Email',
           labelStyle: GoogleFonts.poppins(
             color: passwordmyFocusNode.hasFocus
                 ? AppColors.yellow_accent
@@ -351,7 +353,7 @@ class _SignUpPageState extends State<SignUpPage> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.yellow_accent),
               borderRadius: BorderRadius.circular(20)),
-          labelText: 'Re-Type Password',
+          labelText: 'Password',
           labelStyle: GoogleFonts.poppins(
             color: retypepwmyFocusNode.hasFocus
                 ? AppColors.yellow_accent
