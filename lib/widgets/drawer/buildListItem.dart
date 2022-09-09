@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:serviz/auth_controller.dart';
 import 'package:serviz/utils/colors.dart';
 
 Widget buildListItems(BuildContext context) {
@@ -46,7 +49,17 @@ Widget buildListItems(BuildContext context) {
                   color: AppColors.yellow_accent),
             ),
             Text(
-              'Register Number',
+              'Register No',
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: AppColors.yellow_accent),
+            ),
+            SizedBox(
+              height: 56,
+            ),
+            Text(
+              FirebaseAuth.instance.currentUser!.email.toString(),
               style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
@@ -119,7 +132,9 @@ Widget buildListItems(BuildContext context) {
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.normal, color: AppColors.red_text),
         ),
-        onTap: () {},
+        onTap: () {
+          AuthController.instance.logOut();
+        },
       ),
     ],
   );

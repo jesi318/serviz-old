@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:serviz/auth_controller.dart';
 import 'package:serviz/utils/colors.dart';
 
 class LoginPage extends StatefulWidget {
@@ -61,7 +62,9 @@ class _LoginPageState extends State<LoginPage> {
                       Bounce(
                         duration: Duration(milliseconds: 110),
                         onPressed: () {
-                          Get.offAllNamed('/createjoingroup');
+                          AuthController.instance.login(
+                              _logintextController.text.trim(),
+                              _PasswordtextController.text);
                           //What to do on pressed
                         },
                         child: Container(

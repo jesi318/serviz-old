@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:serviz/auth_controller.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
@@ -14,15 +15,14 @@ class _SignUpPageState extends State<SignUpPage> {
   final _regnotextController = TextEditingController();
   final _emailidtextController = TextEditingController();
   final _passwordtextController = TextEditingController();
-  final _retypepwtextController = TextEditingController();
+  final _classController = TextEditingController();
 
   FocusNode fullNamemyFocusNode = new FocusNode();
   FocusNode regnomyFocusNode = new FocusNode();
   FocusNode emailidmyFocusNode = new FocusNode();
   FocusNode passwordmyFocusNode = new FocusNode();
-  FocusNode retypepwmyFocusNode = new FocusNode();
+  FocusNode classFocusNode = new FocusNode();
 
-  bool _pw_isObscure = true;
   bool _repw_isObscure = true;
 
   @override
@@ -65,14 +65,26 @@ class _SignUpPageState extends State<SignUpPage> {
                         SizedBox(
                           height: 25,
                         ),
-                        retypepassword(),
+                        classkey(),
                         SizedBox(
                           height: 25,
                         ),
                         Bounce(
                           duration: Duration(milliseconds: 110),
                           onPressed: () {
-                            Get.offAllNamed('/createjoingroup');
+                            AuthController.instance.register(
+                              _emailidtextController.text.trim(),
+                              _passwordtextController.text,
+                              _regnotextController.text,
+                              _classController.text,
+                              _nametextController.text,
+                            );
+
+                            AuthController.instance.postDetailsToFirestore(
+                                _regnotextController.text,
+                                _classController.text,
+                                _nametextController.text);
+
                             //What to do on pressed
                           },
                           child: Center(
@@ -246,7 +258,7 @@ class _SignUpPageState extends State<SignUpPage> {
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.yellow_accent),
               borderRadius: BorderRadius.circular(20)),
-          labelText: 'Class',
+          labelText: 'Email',
           labelStyle: GoogleFonts.poppins(
             color: emailidmyFocusNode.hasFocus
                 ? AppColors.yellow_accent
@@ -270,65 +282,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
   //password
   Widget password() => TextField(
-        obscureText: _pw_isObscure,
+        obscureText: _repw_isObscure,
         focusNode: passwordmyFocusNode,
         cursorColor: AppColors.yellow_accent,
         controller: _passwordtextController,
         textInputAction: TextInputAction.next,
-        style: GoogleFonts.poppins(
-          color: AppColors.white_text,
-          fontWeight: FontWeight.bold,
-        ),
-        decoration: InputDecoration(
-          suffixIcon: IconButton(
-            icon: Icon(
-                _pw_isObscure
-                    ? Icons.visibility_rounded
-                    : Icons.visibility_off_rounded,
-                color: AppColors.white_text,
-                size: 20),
-            onPressed: () {
-              setState(() {
-                _pw_isObscure = !_pw_isObscure;
-              });
-            },
-          ),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.white_text),
-              borderRadius: BorderRadius.circular(20)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.yellow_accent),
-              borderRadius: BorderRadius.circular(20)),
-          labelText: 'Email',
-          labelStyle: GoogleFonts.poppins(
-            color: passwordmyFocusNode.hasFocus
-                ? AppColors.yellow_accent
-                : AppColors.white_text,
-          ),
-          // suffixIcon: _textController.text.isEmpty
-          //     ? Container(
-          //         width: 0,
-          //       )
-          //     : IconButton(
-          //         icon: Icon(
-          //           Icons.clear_rounded,
-          //           color: AppColors.yellow_accent,
-          //         ),
-          //         onPressed: () {
-          //           _textController.clear();
-          //         },
-          //       ),
-        ),
-      );
-
-  //retype password
-  Widget retypepassword() => TextField(
-        obscureText: _repw_isObscure,
-        focusNode: retypepwmyFocusNode,
-        cursorColor: AppColors.yellow_accent,
-        controller: _retypepwtextController,
-        textInputAction: TextInputAction.next,
-        onSubmitted: (_) => FocusScope.of(context).unfocus(),
         style: GoogleFonts.poppins(
           color: AppColors.white_text,
           fontWeight: FontWeight.bold,
@@ -355,7 +313,47 @@ class _SignUpPageState extends State<SignUpPage> {
               borderRadius: BorderRadius.circular(20)),
           labelText: 'Password',
           labelStyle: GoogleFonts.poppins(
-            color: retypepwmyFocusNode.hasFocus
+            color: passwordmyFocusNode.hasFocus
+                ? AppColors.yellow_accent
+                : AppColors.white_text,
+          ),
+          // suffixIcon: _textController.text.isEmpty
+          //     ? Container(
+          //         width: 0,
+          //       )
+          //     : IconButton(
+          //         icon: Icon(
+          //           Icons.clear_rounded,
+          //           color: AppColors.yellow_accent,
+          //         ),
+          //         onPressed: () {
+          //           _textController.clear();
+          //         },
+          //       ),
+        ),
+      );
+
+  //retype password
+  Widget classkey() => TextField(
+        focusNode: classFocusNode,
+        cursorColor: AppColors.yellow_accent,
+        controller: _classController,
+        textInputAction: TextInputAction.next,
+        onSubmitted: (_) => FocusScope.of(context).unfocus(),
+        style: GoogleFonts.poppins(
+          color: AppColors.white_text,
+          fontWeight: FontWeight.bold,
+        ),
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.white_text),
+              borderRadius: BorderRadius.circular(20)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: AppColors.yellow_accent),
+              borderRadius: BorderRadius.circular(20)),
+          labelText: 'Class',
+          labelStyle: GoogleFonts.poppins(
+            color: classFocusNode.hasFocus
                 ? AppColors.yellow_accent
                 : AppColors.white_text,
           ),
