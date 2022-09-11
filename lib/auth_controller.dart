@@ -45,7 +45,7 @@ class AuthController extends GetxController {
         "user Message",
         snackPosition: SnackPosition.BOTTOM,
         titleText: Text(
-          "Account creation Failed",
+          "Account Creation Failed",
           style: TextStyle(color: AppColors.white_text),
         ),
         messageText: Text(
@@ -65,7 +65,7 @@ class AuthController extends GetxController {
         "Login Message",
         snackPosition: SnackPosition.BOTTOM,
         titleText: Text(
-          "login Failed",
+          "Login Failed",
           style: TextStyle(color: AppColors.white_text),
         ),
         messageText: Text(

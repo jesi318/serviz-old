@@ -23,6 +23,16 @@ PreferredSizeWidget MyAppBar() {
 // AppBar with dashborad
 PreferredSizeWidget MyHomeAppBar() {
   return AppBar(
+    actions: [
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Icon(
+          Icons.notifications,
+          color: AppColors.black_background,
+          size: 30,
+        ),
+      )
+    ],
     leading: Builder(builder: (context) {
       return IconButton(
         icon: Icon(Icons.dashboard),

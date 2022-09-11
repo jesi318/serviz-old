@@ -40,12 +40,12 @@ class ProgressWidget extends StatelessWidget {
                       child: CircularPercentIndicator(
                         radius: 50,
                         lineWidth: 20,
-                        percent: 0.69,
+                        percent: 0.40,
                         progressColor: AppColors.black_background,
                         backgroundColor: Colors.white54,
                         circularStrokeCap: CircularStrokeCap.round,
                         center: Text(
-                          '69 %',
+                          '40 %',
                           style: GoogleFonts.poppins(
                               fontWeight: FontWeight.bold, fontSize: 13),
                         ),

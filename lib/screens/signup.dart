@@ -96,12 +96,19 @@ class _SignUpPageState extends State<SignUpPage> {
                                   borderRadius: BorderRadius.circular(30),
                                   color: AppColors.yellow_accent),
                               child: Center(
-                                child: Text(
-                                  'Sign Up',
-                                  style: GoogleFonts.poppins(
-                                      color: AppColors.black_background,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
+                                child: Bounce(
+                                  duration: Duration(milliseconds: 110),
+                                  onPressed: () {
+                                    //do the auth control here
+                                  },
+                                  child: Text(
+                                    'Sign Up',
+                                    style: GoogleFonts.poppins(
+                                        color: AppColors.black_background,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                        
+                                  ),
                                 ),
                               ),
                             ),
