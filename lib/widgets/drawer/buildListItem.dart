@@ -5,7 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/auth_controller.dart';
+import 'package:serviz/getusername.dart';
 import 'package:serviz/utils/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final useruid = FirebaseAuth.instance.currentUser!.uid;
+String myDocID = useruid;
+late DocumentSnapshot documentSnapshot;
 
 Widget buildListItems(BuildContext context) {
   return Column(
@@ -41,20 +47,9 @@ Widget buildListItems(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              'Name',
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: AppColors.yellow_accent),
-            ),
-            Text(
-              'Register No',
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: AppColors.yellow_accent),
-            ),
+            FutureBuilder(builder: ((context, snapshot) {
+              return GetUserName(documentID: useruid);
+            })),
             SizedBox(
               height: 56,
             ),
@@ -138,4 +133,17 @@ Widget buildListItems(BuildContext context) {
       ),
     ],
   );
+}
+
+Future<DocumentSnapshot> getudata() async {
+  String myDocID = useruid;
+  late DocumentSnapshot documentSnapshot;
+
+  await FirebaseFirestore.instance
+      .collection("users")
+      .doc(useruid)
+      .get()
+      .then((value) => documentSnapshot = value);
+
+  return documentSnapshot;
 }
