@@ -40,9 +40,10 @@ dependencies:
   percent_indicator: ^4.2.2
   dotted_border: ^2.0.0+2
   file_picker: ^5.0.1
-  firebase_auth: ^3.7.0
-  firebase_core: ^1.21.1
-  cloud_firestore: ^3.4.6
+  firebase_auth: ^4.0.2
+  firebase_core: ^2.1.0
+  cloud_firestore: ^4.0.2
+  firebase_storage: ^11.0.2
 
 dev_dependencies:
   flutter_test:

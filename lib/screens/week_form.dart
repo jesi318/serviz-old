@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -13,6 +15,7 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class UploadWeekForm extends StatefulWidget {
   UploadWeekForm({Key? key}) : super(key: key);
@@ -23,6 +26,35 @@ class UploadWeekForm extends StatefulWidget {
 
 class _UploadWeekFormState extends State<UploadWeekForm> {
   PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+  bool? uploaded;
+
+  Future uploadFile() async {
+    final path = 'files/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+
+    final Storageref = FirebaseStorage.instance.ref().child(path);
+
+    setState(() {
+      uploadTask = Storageref.putFile(file);
+    });
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('Download Link: $urlDownload');
+
+    setState(() {
+      uploaded = true;
+      uploadTask = null;
+    });
+
+    if (uploaded == true) {
+      Get.snackbar('Uploaded', 'Pdf file has been uploaded',
+          snackPosition: SnackPosition.BOTTOM, colorText: AppColors.white_text);
+    }
+  }
 
   Future selectFile() async {
     final result = await FilePicker.platform
@@ -123,7 +155,7 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
                           ),
                         ),
                         duration: Duration(milliseconds: 110),
-                        onPressed: () {}),
+                        onPressed: uploadFile),
                   ),
                 ),
               ],
@@ -162,7 +194,7 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ));
   }
@@ -197,4 +229,38 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
           ),
         ));
   }
+
+  // Widget buildProgress() => StreamBuilder<TaskSnapshot>(
+  //     stream: uploadTask?.snapshotEvents,
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasData) {
+  //         final data = snapshot.data!;
+  //         double progress = data.bytesTransferred / data.totalBytes;
+
+  //         return SizedBox(
+  //           height: MediaQuery.of(context).size.height * 1 / 10,
+  //           child: Stack(
+  //             fit: StackFit.expand,
+  //             children: [
+  //               LinearProgressIndicator(
+  //                 value: progress,
+  //                 backgroundColor: AppColors.grey_background,
+  //                 color: AppColors.yellow_accent,
+  //               ),
+  //               Center(
+  //                 child: Text(
+  //                   '${(100 * progress).roundToDouble()}%',
+  //                   style: GoogleFonts.poppins(
+  //                       fontWeight: FontWeight.bold,
+  //                       fontSize: 15,
+  //                       color: AppColors.white_text),
+  //                 ),
+  //               )
+  //             ],
+  //           ),
+  //         );
+  //       } else {
+  //         return const SizedBox(height: 50);
+  //       }
+  //     });
 }
