@@ -7,10 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/colors.dart';
 
 class WidgetCard extends StatelessWidget {
-  const WidgetCard({Key? key, required this.week, required this.status})
-      : super(key: key);
+  const WidgetCard({Key? key, required this.week}) : super(key: key);
   final String week;
-  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +77,7 @@ class WidgetCard extends StatelessWidget {
                               ),
                               Align(
                                 alignment: AlignmentDirectional.bottomEnd,
-                                child: Text(status,
+                                child: Text("Approved",
                                     style: GoogleFonts.poppins(
                                         color: Colors.green,
                                         fontSize: 15.0,

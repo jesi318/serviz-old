@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
-import 'package:serviz/models/week_model.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/drawer/drawer.dart';
@@ -21,8 +20,6 @@ class _HomePageState extends State<HomePage> {
 
   ScrollController? _controller;
 
-  List weekList = [];
-
   @override
   void initState() {
     _controller = ScrollController();
@@ -34,18 +31,6 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
-  }
-
-  fetchWeekList() async {
-    dynamic result = await WeekFetcher().fetchWeek();
-
-    if (result == null) {
-      print("Unable to retrive week list");
-    } else {
-      setState(() {
-        weekList = result;
-      });
-    }
   }
 
   @override
@@ -64,12 +49,9 @@ class _HomePageState extends State<HomePage> {
                     controller: _controller,
                     physics: BouncingScrollPhysics(),
                     reverse: true,
-                    itemCount: weekList.length,
+                    itemCount: 15,
                     itemBuilder: (context, index) {
-                      return WidgetCard(
-                        week: "Week " + '${index + 1}',
-                        status: weekList[index]['status'],
-                      );
+                      return WidgetCard(week: "Week " + '${index + 1}');
                     }))
           ],
         ));
