@@ -3,11 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:serviz/functions/get_regno.dart';
 import 'package:serviz/models/user_model_gid.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/drawer/buildListItem.dart';
+
+final useruid = FirebaseAuth.instance.currentUser!.uid;
 
 class JoinGroupForm extends StatefulWidget {
   @override
@@ -17,10 +20,33 @@ class JoinGroupForm extends StatefulWidget {
 class _JoinGroupFormState extends State<JoinGroupForm> {
   final _textController = TextEditingController();
   FocusNode myFocusNode = new FocusNode();
+  String username = "";
+  String grp_id = "";
+
+  get_username_inList() async {
+    var temp1 = await GetRegNo(documentID: useruid).getcollectionusername();
+
+    print(temp1);
+
+    username = temp1;
+    List memberlist = [username];
+
+    print(memberlist);
+    return memberlist;
+  }
+
+  get_grp_id() async {
+    var temp = await GetRegNo(documentID: useruid).getcollectiongrpno();
+
+    grp_id = temp;
+
+    return grp_id;
+  }
 
   @override
   void initState() {
     super.initState();
+    get_grp_id();
 
     _textController.addListener(() => setState(() {}));
   }
@@ -43,7 +69,11 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
               Bounce(
                 duration: Duration(milliseconds: 110),
                 onPressed: () {
-                  AssignGroupID(_textController.text);
+                  AssignGroupIDtoprofile(_textController.text);
+                  print("#######");
+                  print(grp_id);
+                  print(username);
+                  JoinGroupwithGID(grp_id);
                   Get.toNamed('/home');
                   //What to do on pressed
                 },
@@ -109,7 +139,7 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
         ),
       );
 
-  AssignGroupID(String grp_id) async {
+  AssignGroupIDtoprofile(String grp_id) async {
     // calling our firestore
     // calling our model
     // sending these values
@@ -125,6 +155,18 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
         .collection("users")
         .doc(useruid)
         .update(userModelGid.toMap());
-    Get.snackbar('Joined Group', 'Info stored');
+    Get.snackbar('Assigned Group', 'Info stored');
+  }
+
+  JoinGroupwithGID(String grp_id) async {
+    // calling our firestore
+    // calling our model
+    // sending these values
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+
+    await firebaseFirestore.collection("group").doc(grp_id).update(
+        {"members": FieldValue.arrayUnion(await get_username_inList())});
+    Get.snackbar('Group info', 'NAme stored to group collection');
   }
 }

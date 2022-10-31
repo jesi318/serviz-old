@@ -34,7 +34,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   String grp_id = "";
   String faculty_name = "Shamanth";
   String username = "";
-  var gu;
   s() async {
     var sv = await GetRegNo(documentID: useruid).getcollection();
     print(sv);
