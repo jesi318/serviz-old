@@ -5,7 +5,8 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/functions/get_regno.dart';
-import 'package:serviz/models/user.dart' as UserFile;
+import 'package:serviz/functions/getusername.dart';
+import 'package:serviz/models/group_model.dart';
 import 'package:serviz/models/user_model_gid.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
@@ -20,6 +21,7 @@ class CreateGroupScreen extends StatefulWidget {
 
 class _CreateGroupScreenState extends State<CreateGroupScreen> {
   // editing controller
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
   final groupNameEditingController = new TextEditingController();
   final classEditingController = new TextEditingController();
   // focus node
@@ -30,6 +32,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   late Rx<User?> _user;
 
   String grp_id = "";
+  String faculty_name = "Shamanth";
+  String username = "";
+  var gu;
   s() async {
     var sv = await GetRegNo(documentID: useruid).getcollection();
     print(sv);
@@ -37,6 +42,18 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     print(grp_id);
 
     return grp_id;
+  }
+
+  get_username_inList() async {
+    var temp = await GetRegNo(documentID: useruid).getcollectionusername();
+
+    print(temp);
+
+    username = temp;
+    List memberlist = [username];
+
+    print(memberlist);
+    return memberlist;
   }
 
   @override
@@ -142,8 +159,9 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     final createButton = Bounce(
       duration: Duration(milliseconds: 110),
       onPressed: () {
-        postGroupID(grp_id);
+        postGroupIDtoUserProfile(grp_id);
 
+        postGroupDetailsToGroup(faculty_name);
         Get.toNamed('/home');
         //What to do on pressed
       },
@@ -194,7 +212,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     );
   }
 
-  postGroupID(String grp_id) async {
+  postGroupIDtoUserProfile(String grp_id) async {
     // calling our firestore
     // calling our model
     // sending these values
@@ -211,5 +229,28 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         .doc(useruid)
         .update(userModelGid.toMap());
     Get.snackbar('Group info', 'Info stored');
+  }
+
+  postGroupDetailsToGroup(String faculty_name) async {
+    // calling our firestore
+    // calling our model
+    // sending these values
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = auth.currentUser;
+
+    GroupModel grpModel = GroupModel();
+
+    // writing all the valus
+    grpModel.faculty_name = faculty_name;
+
+    await firebaseFirestore
+        .collection("group")
+        .doc(grp_id)
+        .set(grpModel.toMap());
+    Get.snackbar('Group info', 'Info stored to group collection');
+
+    await firebaseFirestore.collection("group").doc(grp_id).update(
+        {"members": FieldValue.arrayUnion(await get_username_inList())});
+    Get.snackbar('Group info', 'Info stored to group collection');
   }
 }

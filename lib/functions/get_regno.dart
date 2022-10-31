@@ -12,6 +12,7 @@ class GetRegNo {
   final String documentID;
   var reg_num;
   var grp_id;
+  var username;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   GetRegNo({required this.documentID});
@@ -46,5 +47,18 @@ class GetRegNo {
 
     print(grp_id);
     return grp_id.toString();
+  }
+
+  getcollectionusername() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(useruid)
+        .get()
+        .then((event) {
+      username = event['name'];
+    });
+
+    print(username);
+    return username.toString();
   }
 }
