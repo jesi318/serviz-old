@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:serviz/functions/get_regno.dart';
+import 'package:serviz/functions/getusername.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:get/get.dart';
@@ -13,6 +17,25 @@ class MyGroupForm extends StatefulWidget {
 }
 
 class _MyGroupFormState extends State<MyGroupForm> {
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference group = FirebaseFirestore.instance.collection('group');
+  final useruid = FirebaseAuth.instance.currentUser!.uid;
+  String grp_num = "";
+
+  retrieve_grp_no() async {
+    var temp = await GetRegNo(documentID: useruid).getcollectiongrpno();
+
+    grp_num = temp;
+
+    return grp_num;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +66,6 @@ class _MyGroupFormState extends State<MyGroupForm> {
                         color: AppColors.white_text,
                         size: 55,
                       ),
-                      Text(
-                        'My Group',
-                        style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: AppColors.yellow_accent),
-                      )
                     ],
                   ),
                 ),
@@ -77,13 +93,15 @@ class _MyGroupFormState extends State<MyGroupForm> {
                           children: [
                             Column(
                               children: [
-                                Text(
-                                  'Faculty In Charge',
-                                  style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: AppColors.yellow_accent),
-                                ),
+                                FutureBuilder(
+                                    future: retrieve_grp_no(),
+                                    builder: ((context, snapshot) {
+                                      return Text(grp_num,
+                                          style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25,
+                                              color: AppColors.yellow_accent));
+                                    })),
                                 Text('Faculty Name',
                                     style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.bold,
@@ -125,7 +143,9 @@ class _MyGroupFormState extends State<MyGroupForm> {
               ),
             ],
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Bounce(
             duration: Duration(milliseconds: 110),
             onPressed: () {

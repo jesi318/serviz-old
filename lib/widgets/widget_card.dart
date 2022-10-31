@@ -6,17 +6,28 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../utils/colors.dart';
 
-class WidgetCard extends StatelessWidget {
+class WidgetCard extends StatefulWidget {
   const WidgetCard({Key? key, required this.week, required this.status})
       : super(key: key);
   final String week;
   final String status;
 
   @override
+  State<WidgetCard> createState() => _WidgetCardState();
+}
+
+class _WidgetCardState extends State<WidgetCard> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed('/weekform');
+        Get.toNamed('/weekform', arguments: widget.week);
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -46,7 +57,11 @@ class WidgetCard extends StatelessWidget {
                         alignment: AlignmentDirectional.center,
                         child: Container(
                             height: 55.0,
-                            child: Image.asset("assets/icons/checked.png")),
+                            child: widget.status == 'Approved'
+                                ? Image.asset("assets/icons/checked.png")
+                                : widget.status == 'Pending'
+                                    ? Image.asset("assets/icons/pending.png")
+                                    : Image.asset("assets/icons/Rejected.png")),
                       ),
                       SizedBox(
                         width: 17,
@@ -58,7 +73,7 @@ class WidgetCard extends StatelessWidget {
                           Container(
                             width: 100,
                             child: Text(
-                              week,
+                              widget.week,
                               style: GoogleFonts.poppins(
                                   color: Colors.black,
                                   fontSize: 18.0,
@@ -79,7 +94,7 @@ class WidgetCard extends StatelessWidget {
                               ),
                               Align(
                                 alignment: AlignmentDirectional.bottomEnd,
-                                child: Text(status,
+                                child: Text(widget.status,
                                     style: GoogleFonts.poppins(
                                         color: Colors.green,
                                         fontSize: 15.0,

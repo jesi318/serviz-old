@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:serviz/models/user_model_gid.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:serviz/widgets/appbar.dart';
+import 'package:serviz/widgets/drawer/buildListItem.dart';
 
 class JoinGroupForm extends StatefulWidget {
   @override
@@ -39,6 +43,7 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
               Bounce(
                 duration: Duration(milliseconds: 110),
                 onPressed: () {
+                  AssignGroupID(_textController.text);
                   Get.toNamed('/home');
                   //What to do on pressed
                 },
@@ -103,4 +108,23 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
                 ),
         ),
       );
+
+  AssignGroupID(String grp_id) async {
+    // calling our firestore
+    // calling our model
+    // sending these values
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+
+    UserModelGid userModelGid = UserModelGid();
+
+    // writing all the valus
+    userModelGid.grp_id = grp_id;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(useruid)
+        .update(userModelGid.toMap());
+    Get.snackbar('Joined Group', 'Info stored');
+  }
 }

@@ -8,12 +8,11 @@ final useruid = FirebaseAuth.instance.currentUser!.uid;
 
 class GetUserName extends StatelessWidget {
   final String documentID;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   GetUserName({required this.documentID});
 
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(documentID).get(),
         builder: ((context, snapshot) {

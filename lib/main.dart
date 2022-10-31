@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'serviz',
-      initialRoute: '/teachershomepage',
+      initialRoute: '/createjoingroup',
       getPages: appRoutes(),
     );
   }

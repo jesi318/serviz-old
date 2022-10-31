@@ -13,6 +13,7 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:serviz/functions/get_regno.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -28,14 +29,22 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
   bool? uploaded;
+  String ss = "";
+  s() async {
+    var sv = await GetRegNo(documentID: useruid).getcollectiongrpno();
+
+    print(sv);
+    ss = sv;
+  }
 
   Future uploadFile() async {
-    final path = 'files/${pickedFile!.name}';
+    final path = 'files/${ss}/${Get.arguments}/${pickedFile!.name}';
     final file = File(pickedFile!.path!);
 
     final Storageref = FirebaseStorage.instance.ref().child(path);
 
     setState(() {
+      s();
       uploadTask = Storageref.putFile(file);
     });
 
@@ -87,7 +96,7 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: Text(
-                      "Your Weekly Report",
+                      Get.arguments,
                       style: GoogleFonts.poppins(
                           color: AppColors.white_text, fontSize: 27),
                     ),

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/auth_controller.dart';
-import 'package:serviz/getusername.dart';
+import 'package:serviz/functions/getusername.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

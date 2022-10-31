@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:serviz/screens/create_join_group.dart';
 import 'package:serviz/screens/homepg.dart';
 import 'package:serviz/screens/login.dart';
 import 'package:serviz/utils/colors.dart';
@@ -29,7 +30,7 @@ class AuthController extends GetxController {
       print("login page");
       Get.offAll(() => LoginPage());
     } else {
-      Get.offAll(() => HomePage());
+      Get.offAll(() => CreateJoinGroupScreen());
     }
   }
 
