@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/functions/get_regno.dart';
@@ -17,22 +18,14 @@ class MyGroupForm extends StatefulWidget {
 }
 
 class _MyGroupFormState extends State<MyGroupForm> {
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  CollectionReference group = FirebaseFirestore.instance.collection('group');
   final useruid = FirebaseAuth.instance.currentUser!.uid;
-  String grp_num = "";
-
-  retrieve_grp_no() async {
-    var temp = await GetRegNo(documentID: useruid).getcollectiongrpno();
-
-    grp_num = temp;
-
-    return grp_num;
-  }
+  String username = '';
+  String grp_num = '';
+  String faculty_name = '';
+  List members = [];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -53,22 +46,31 @@ class _MyGroupFormState extends State<MyGroupForm> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 1 / 7,
-                  width: MediaQuery.of(context).size.width - 50,
-                  decoration: BoxDecoration(
-                      color: AppColors.black_background,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.groups_rounded,
-                        color: AppColors.white_text,
-                        size: 55,
-                      ),
-                    ],
-                  ),
-                ),
+                child: FutureBuilder(
+                    future: getMyGroupDetails(),
+                    builder: (context, snapshot) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 1 / 7,
+                        width: MediaQuery.of(context).size.width - 50,
+                        decoration: BoxDecoration(
+                            color: AppColors.black_background,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.groups_rounded,
+                              color: AppColors.white_text,
+                              size: 55,
+                            ),
+                            Text(grp_num,
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    color: AppColors.yellow_accent)),
+                          ],
+                        ),
+                      );
+                    }),
               ),
             ],
           ),
@@ -85,58 +87,60 @@ class _MyGroupFormState extends State<MyGroupForm> {
                       borderRadius: BorderRadius.circular(20)),
                   child: Padding(
                     padding: const EdgeInsets.all(15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
+                    child: FutureBuilder(
+                      future: getMyGroupDetails(),
+                      builder: (context, snapshot) {
+                        return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                FutureBuilder(
-                                    future: retrieve_grp_no(),
-                                    builder: ((context, snapshot) {
-                                      return Text(grp_num,
-                                          style: GoogleFonts.poppins(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 25,
-                                              color: AppColors.yellow_accent));
-                                    })),
-                                Text('Faculty Name',
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                        color: AppColors.white_text)),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Text(
-                                  'Team Members',
-                                  style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: AppColors.yellow_accent),
+                                Column(
+                                  children: [
+                                    Text("Faculty in Charge",
+                                        style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25,
+                                            color: AppColors.yellow_accent)),
+                                    SizedBox(height: 10),
+                                    Text(faculty_name,
+                                        style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: AppColors.white_text)),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    Text(
+                                      'Team Members',
+                                      style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25,
+                                          color: AppColors.yellow_accent),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
+                            Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: members.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(
+                                        members[index],
+                                        style: GoogleFonts.poppins(
+                                            color: AppColors.white_text),
+                                      ),
+                                    );
+                                  }),
+                            )
                           ],
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: 6,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(
-                                    'Name',
-                                    style: GoogleFonts.poppins(
-                                        color: AppColors.white_text),
-                                  ),
-                                );
-                              }),
-                        )
-                      ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -150,6 +154,7 @@ class _MyGroupFormState extends State<MyGroupForm> {
             duration: Duration(milliseconds: 110),
             onPressed: () {
               //What to do on pressed
+              exitGroup();
             },
             child: Container(
               width: MediaQuery.of(context).size.width - 50,
@@ -179,5 +184,42 @@ class _MyGroupFormState extends State<MyGroupForm> {
         ],
       ),
     );
+  }
+
+  getMyGroupNum() async {
+    var grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
+  }
+
+  getMyGroupDetails() async {
+    grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
+    username = await GetRegNo(documentID: useruid).getcollectionusername();
+
+    await FirebaseFirestore.instance
+        .collection('group')
+        .doc(grp_num)
+        .get()
+        .then((data) => {
+              faculty_name = data['faculty_name'],
+              members = data['members'],
+            });
+  }
+
+  exitGroup() async {
+    try {
+      //grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
+
+      await FirebaseFirestore.instance.collection('group').doc(grp_num).update({
+        'members': FieldValue.arrayRemove([username])
+      });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(useruid)
+          .update({'grp_id': 'null'});
+
+      Get.snackbar("Successfull", "Exited group");
+      Get.offAllNamed('/createjoingroup');
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
   }
 }

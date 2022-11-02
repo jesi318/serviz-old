@@ -18,35 +18,15 @@ class JoinGroupForm extends StatefulWidget {
 }
 
 class _JoinGroupFormState extends State<JoinGroupForm> {
+  final user = FirebaseAuth.instance.currentUser;
   final _textController = TextEditingController();
   FocusNode myFocusNode = new FocusNode();
   String username = "";
   String grp_id = "";
 
-  get_username_inList() async {
-    var temp1 = await GetRegNo(documentID: useruid).getcollectionusername();
-
-    print(temp1);
-
-    username = temp1;
-    List memberlist = [username];
-
-    print(memberlist);
-    return memberlist;
-  }
-
-  get_grp_id() async {
-    var temp = await GetRegNo(documentID: useruid).getcollectiongrpno();
-
-    grp_id = temp;
-
-    return grp_id;
-  }
-
   @override
   void initState() {
     super.initState();
-    get_grp_id();
 
     _textController.addListener(() => setState(() {}));
   }
@@ -69,13 +49,8 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
               Bounce(
                 duration: Duration(milliseconds: 110),
                 onPressed: () {
-                  AssignGroupIDtoprofile(_textController.text);
-                  print("#######");
-                  print(grp_id);
-                  print(username);
-                  JoinGroupwithGID(grp_id);
+                  JoinGroupwithGID(_textController.text);
                   Get.toNamed('/home');
-                  //What to do on pressed
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -139,34 +114,17 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
         ),
       );
 
-  AssignGroupIDtoprofile(String grp_id) async {
-    // calling our firestore
-    // calling our model
-    // sending these values
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = FirebaseAuth.instance.currentUser;
-
-    UserModelGid userModelGid = UserModelGid();
-
-    // writing all the valus
-    userModelGid.grp_id = grp_id;
-
-    await firebaseFirestore
-        .collection("users")
-        .doc(useruid)
-        .update(userModelGid.toMap());
-    Get.snackbar('Assigned Group', 'Info stored');
-  }
-
   JoinGroupwithGID(String grp_id) async {
-    // calling our firestore
-    // calling our model
-    // sending these values
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(useruid)
+        .update({'grp_id': grp_id});
 
-    await firebaseFirestore.collection("group").doc(grp_id).update(
-        {"members": FieldValue.arrayUnion(await get_username_inList())});
-    Get.snackbar('Group info', 'NAme stored to group collection');
+    username = await GetRegNo(documentID: useruid).getcollectionusername();
+
+    await FirebaseFirestore.instance.collection("group").doc(grp_id).update({
+      "members": FieldValue.arrayUnion([username])
+    });
+    Get.snackbar('Successful', 'Joined group');
   }
 }

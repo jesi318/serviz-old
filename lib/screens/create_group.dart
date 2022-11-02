@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/functions/get_regno.dart';
 import 'package:serviz/functions/getusername.dart';
-import 'package:serviz/models/group_model.dart';
 import 'package:serviz/models/user_model_gid.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
@@ -20,6 +19,7 @@ class CreateGroupScreen extends StatefulWidget {
 }
 
 class _CreateGroupScreenState extends State<CreateGroupScreen> {
+  final user = FirebaseAuth.instance.currentUser;
   // editing controller
   final useruid = FirebaseAuth.instance.currentUser!.uid;
   final groupNameEditingController = new TextEditingController();
@@ -36,23 +36,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   String username = "";
   s() async {
     var sv = await GetRegNo(documentID: useruid).getcollection();
-    print(sv);
     grp_id = 'G' + sv;
-    print(grp_id);
-
-    return grp_id;
-  }
-
-  get_username_inList() async {
-    var temp = await GetRegNo(documentID: useruid).getcollectionusername();
-
-    print(temp);
-
-    username = temp;
-    List memberlist = [username];
-
-    print(memberlist);
-    return memberlist;
   }
 
   @override
@@ -110,49 +94,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         ),
       ),
     );
-
-    // // class name field
-    // final classNameField = TextFormField(
-    //   focusNode: classmyFocusNode,
-    //   cursorColor: AppColors.yellow_accent,
-    //   autofocus: false,
-    //   controller: classEditingController,
-    //   keyboardType: TextInputType.name,
-    //   validator: ((value) {
-    //     if (value!.isEmpty) {
-    //       return ("Class required");
-    //     }
-    //     return null;
-    //   }),
-    //   onSaved: (newValue) {
-    //     classEditingController.text = newValue!;
-    //   },
-    //   textInputAction: TextInputAction.next,
-    //   style: GoogleFonts.poppins(
-    //     color: AppColors.white_text,
-    //     fontWeight: FontWeight.bold,
-    //   ),
-    //   decoration: InputDecoration(
-    //     prefixIcon: Icon(
-    //       Icons.class_rounded,
-    //       color: AppColors.yellow_accent,
-    //     ),
-    //     contentPadding: EdgeInsets.fromLTRB(10, 15, 20, 15),
-    //     labelText: 'Class',
-    //     enabledBorder: OutlineInputBorder(
-    //         borderSide: BorderSide(color: AppColors.white_text),
-    //         borderRadius: BorderRadius.circular(20)),
-    //     focusedBorder: OutlineInputBorder(
-    //       borderSide: BorderSide(color: AppColors.yellow_accent),
-    //       borderRadius: BorderRadius.circular(20),
-    //     ),
-    //     labelStyle: GoogleFonts.poppins(
-    //       color: classmyFocusNode.hasFocus
-    //           ? AppColors.yellow_accent
-    //           : AppColors.white_text,
-    //     ),
-    //   ),
-    // );
 
     //signup button
     final createButton = Bounce(
@@ -231,25 +172,17 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   }
 
   postGroupDetailsToGroup(String faculty_name) async {
-    // calling our firestore
-    // calling our model
-    // sending these values
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = auth.currentUser;
+    username = await GetRegNo(documentID: useruid).getcollectionusername();
 
-    GroupModel grpModel = GroupModel();
-
-    // writing all the valus
-    grpModel.faculty_name = faculty_name;
-
-    await firebaseFirestore
+    await FirebaseFirestore.instance
         .collection("group")
         .doc(grp_id)
-        .set(grpModel.toMap());
-    Get.snackbar('Group info', 'Info stored to group collection');
+        .set({'grp_id': grp_id});
 
-    await firebaseFirestore.collection("group").doc(grp_id).update(
-        {"members": FieldValue.arrayUnion(await get_username_inList())});
-    Get.snackbar('Group info', 'Info stored to group collection');
+    await FirebaseFirestore.instance.collection("group").doc(grp_id).update({
+      "members": FieldValue.arrayUnion([username]),
+      'faculty_name': faculty_name
+    });
+    Get.snackbar('Successfull', 'Created group!');
   }
 }
