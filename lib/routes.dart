@@ -27,7 +27,6 @@ appRoutes() => [
       GetPage(name: '/signup', page: () => SignUpPage()),
       GetPage(name: '/mygroupform', page: () => MyGroupForm()),
       GetPage(name: '/teachershomepage', page: () => TeachersHomePage()),
-      
     ];
 
 class MyMiddelware extends GetMiddleware {

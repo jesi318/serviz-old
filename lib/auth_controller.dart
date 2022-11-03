@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:serviz/screens/create_join_group.dart';
 import 'package:serviz/screens/homepg.dart';
 import 'package:serviz/screens/login.dart';
+import 'package:serviz/screens/teachers_homepg.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:serviz/models/user_model.dart';
@@ -30,7 +31,7 @@ class AuthController extends GetxController {
       print("login page");
       Get.offAll(() => LoginPage());
     } else {
-      Get.offAll(() => CreateJoinGroupScreen());
+      Get.offAll(() => TeachersHomePage());
     }
   }
 
