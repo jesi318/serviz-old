@@ -49,7 +49,7 @@ class CreateJoinGroupScreen extends StatelessWidget {
                     topRight: Radius.circular(60))),
             alignment: Alignment.center,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Bounce(
@@ -123,6 +123,21 @@ class CreateJoinGroupScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                TextButton(
+                    onPressed: () {},
+                    child: Bounce(
+                      duration: Duration(milliseconds: 100),
+                      onPressed: () {
+                        Get.toNamed('/viewgroupspage');
+                      },
+                      child: Text(
+                        'View groups',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )),
               ],
             ),
           ),

@@ -8,7 +8,7 @@ import 'package:serviz/models/user_model_gid.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:serviz/widgets/appbar.dart';
-import 'package:serviz/widgets/drawer/buildListItem.dart';
+import 'package:serviz/widgets/students_drawer/buildListItem.dart';
 
 final useruid = FirebaseAuth.instance.currentUser!.uid;
 

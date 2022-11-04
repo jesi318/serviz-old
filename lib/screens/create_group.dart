@@ -9,7 +9,7 @@ import 'package:serviz/functions/getusername.dart';
 import 'package:serviz/models/user_model_gid.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
-import 'package:serviz/widgets/drawer/drawer.dart';
+import 'package:serviz/widgets/students_drawer/drawer.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   const CreateGroupScreen({Key? key}) : super(key: key);

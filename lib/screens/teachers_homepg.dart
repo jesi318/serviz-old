@@ -6,6 +6,7 @@ import 'package:serviz/functions/get_week.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/group_search_widget.dart';
+import 'package:serviz/widgets/students_drawer/drawer.dart';
 
 class TeachersHomePage extends StatefulWidget {
   const TeachersHomePage({super.key});
@@ -32,6 +33,7 @@ class _TeachersHomePageState extends State<TeachersHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TeachersHomeAppBar(),
+      drawer: NavigationDrawer(),
       backgroundColor: AppColors.grey_background,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,

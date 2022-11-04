@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:serviz/utils/colors.dart';
-import 'package:serviz/widgets/drawer/buildHeader.dart';
-import 'package:serviz/widgets/drawer/buildListItem.dart';
+import 'package:serviz/widgets/students_drawer/buildHeader.dart';
+import 'package:serviz/widgets/students_drawer/buildListItem.dart';
 
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({Key? key}) : super(key: key);

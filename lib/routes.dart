@@ -6,6 +6,7 @@ import 'package:serviz/screens/homepg.dart';
 import 'package:serviz/screens/login.dart';
 import 'package:serviz/screens/my_group_form.dart';
 import 'package:serviz/screens/teachers_homepg.dart';
+import 'package:serviz/screens/view_groups.dart';
 import 'package:serviz/screens/week_form.dart';
 import 'package:serviz/screens/welcome_screen.dart';
 import 'screens/signup.dart';
@@ -27,6 +28,7 @@ appRoutes() => [
       GetPage(name: '/signup', page: () => SignUpPage()),
       GetPage(name: '/mygroupform', page: () => MyGroupForm()),
       GetPage(name: '/teachershomepage', page: () => TeachersHomePage()),
+      GetPage(name: '/viewgroupspage', page: () => ViewGroups()),
     ];
 
 class MyMiddelware extends GetMiddleware {

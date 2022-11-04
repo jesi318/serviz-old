@@ -8,7 +8,7 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:serviz/functions/get_week.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
-import 'package:serviz/widgets/drawer/drawer.dart';
+import 'package:serviz/widgets/students_drawer/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/widgets/progress_widget.dart';
 import 'package:serviz/widgets/widget_card.dart';
