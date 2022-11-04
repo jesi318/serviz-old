@@ -4,7 +4,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/functions/get_avl_grplist.dart';
+import 'package:serviz/functions/get_regno.dart';
 import 'package:serviz/utils/colors.dart';
+import 'package:serviz/widgets/GrouplistCard.dart';
 import 'package:serviz/widgets/appbar.dart';
 
 class ViewGroups extends StatefulWidget {
@@ -18,6 +20,7 @@ class _ViewGroupsState extends State<ViewGroups> {
   List Items = [];
   var _future;
   List gid = [];
+  List gnullid = [];
   String? _selectedval = 'Week 1';
   FocusNode DropFocusNode = new FocusNode();
   Future getWeekId() async {
@@ -43,9 +46,25 @@ class _ViewGroupsState extends State<ViewGroups> {
         );
   }
 
+  getusernull() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .where("grp_id", isEqualTo: "")
+        .get()
+        .then(
+          (snapshot) => snapshot.docs.forEach((element) {
+            print(element['name']);
+            gnullid.add(element['name'].toString());
+          }),
+        );
+    print("######1");
+    print(gnullid);
+  }
+
   @override
   void initState() {
     _future = getWeekId();
+    getusernull();
     // TODO: implement initState
     super.initState();
   }
@@ -127,6 +146,7 @@ class _ViewGroupsState extends State<ViewGroups> {
 
             Expanded(
               child: TabBarView(children: [
+                //Tab 1
                 Center(
                     child: FutureBuilder(
                   future: getGroupList(),
@@ -141,9 +161,18 @@ class _ViewGroupsState extends State<ViewGroups> {
                         });
                   },
                 )),
+
                 Center(
-                  child: Text('tab 2'),
-                )
+                    child: ListView.builder(
+                        // controller: _controller,
+                        physics: BouncingScrollPhysics(),
+                        reverse: true,
+                        itemCount: gnullid.length,
+                        itemBuilder: (context, index) {
+                          return GrouplistWidgetCard(
+                            grp: gnullid[index],
+                          );
+                        }))
               ]),
             )
           ],

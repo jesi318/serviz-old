@@ -61,4 +61,13 @@ class GetRegNo {
     print(username);
     return username.toString();
   }
+
+  getusernotinagrp() async {
+    getusernotinagrp() async {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .where("grp_id" == Null)
+          .get();
+    }
+  }
 }
