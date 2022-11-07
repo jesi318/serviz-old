@@ -91,7 +91,9 @@ PreferredSizeWidget TeachershomeAppBar() {
       Padding(
         padding: const EdgeInsets.only(right: 10),
         child: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed('/teachersnotifscreen');
+          },
           icon: Icon(Icons.notifications),
           color: AppColors.black_background,
         ),
@@ -127,7 +129,9 @@ PreferredSizeWidget TeachersHomeAppBar() {
       Padding(
         padding: const EdgeInsets.only(right: 10),
         child: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed('/teachersnotifscreen');
+          },
           icon: Icon(Icons.message_rounded),
           color: AppColors.black_background,
         ),

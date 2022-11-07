@@ -36,10 +36,13 @@ class _TeachersHomePageState extends State<TeachersHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          Text(
+            'Class Groups',
+            style: GoogleFonts.poppins(fontSize: 25),
+          ),
           SizedBox(
             height: 10,
           ),
-          SearchWidget(),
           Expanded(
               child: FutureBuilder(
             future: getGroupList(),
