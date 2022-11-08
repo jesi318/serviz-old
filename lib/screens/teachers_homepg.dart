@@ -38,7 +38,10 @@ class _TeachersHomePageState extends State<TeachersHomePage> {
         children: [
           Text(
             'Class Groups',
-            style: GoogleFonts.poppins(fontSize: 25),
+            style: GoogleFonts.poppins(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: AppColors.white_text),
           ),
           SizedBox(
             height: 10,
