@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,11 +21,24 @@ class TeachersNotificationScreen extends StatefulWidget {
 
 class _TeachersNotificationScreenState
     extends State<TeachersNotificationScreen> {
+  var pickedFile;
   @override
   void initState() {
     // TODO: implement initState
     getMessages();
     super.initState();
+  }
+
+  Future selectFile() async {
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf', 'jpg']);
+    if (result == null) {
+      return;
+    }
+
+    setState(() {
+      pickedFile = result.files.first;
+    });
   }
 
   List<String> options = ["All Groups", "G2062035", "G2"];
@@ -49,7 +62,7 @@ class _TeachersNotificationScreenState
                   padding: EdgeInsets.only(top: 10, bottom: 10),
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 10, 40, 20),
+                      padding: const EdgeInsets.fromLTRB(20, 10, 40, 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,22 +107,6 @@ class _TeachersNotificationScreenState
               width: double.infinity,
               child: Row(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: AppColors.yellow_accent,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        color: AppColors.grey_background,
-                        size: 20,
-                      ),
-                    ),
-                  ),
                   SizedBox(
                     width: 15,
                   ),
@@ -120,6 +117,9 @@ class _TeachersNotificationScreenState
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: AppColors.white_text),
                           border: InputBorder.none),
+                      style: GoogleFonts.poppins(
+                        color: AppColors.white_text,
+                      ),
                     ),
                   ),
                   SizedBox(
