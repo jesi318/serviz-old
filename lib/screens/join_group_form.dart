@@ -50,7 +50,6 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
                 duration: Duration(milliseconds: 110),
                 onPressed: () {
                   JoinGroupwithGID(_textController.text);
-                  Get.toNamed('/home');
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -60,7 +59,7 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
                       color: AppColors.yellow_accent),
                   child: Center(
                     child: Text(
-                      'Join',
+                      'Request',
                       style: GoogleFonts.poppins(
                           color: AppColors.black_background,
                           fontWeight: FontWeight.bold,
@@ -115,16 +114,38 @@ class _JoinGroupFormState extends State<JoinGroupForm> {
       );
 
   JoinGroupwithGID(String grp_id) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(useruid)
-        .update({'grp_id': grp_id});
+    var groupRef = FirebaseFirestore.instance.collection("group").doc(grp_id);
+    var doc = await groupRef.get();
 
-    username = await GetRegNo(documentID: useruid).getcollectionusername();
+    if (doc.exists) {
+      // await FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(useruid)
+      //     .update({'grp_id': grp_id});
 
-    await FirebaseFirestore.instance.collection("group").doc(grp_id).update({
-      "members": FieldValue.arrayUnion([username])
-    });
-    Get.snackbar('Successful', 'Joined group');
+      username = await GetRegNo(documentID: useruid).getcollectionusername();
+
+      // await groupRef.update({
+      //   "members": FieldValue.arrayUnion([username])
+      // });
+
+      // request send
+      try {
+        await FirebaseFirestore.instance
+            .collection('group')
+            .doc(grp_id)
+            .update({
+          'requests': FieldValue.arrayUnion([
+            {username.toLowerCase(): useruid.toString()},
+          ])
+        });
+        Get.snackbar("Successful", "Request sent");
+        Get.toNamed('/home');
+      } catch (e) {
+        print('Error');
+      }
+    } else {
+      Get.snackbar("Failed", "Group doesn't exist");
+    }
   }
 }

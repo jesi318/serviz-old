@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,6 +25,9 @@ class _MyGroupFormState extends State<MyGroupForm> {
   String grp_num = '';
   String faculty_name = '';
   List members = [];
+  List requests = [];
+  int action = 0;
+  //Map requests = {};
 
   @override
   void initState() {
@@ -47,7 +52,7 @@ class _MyGroupFormState extends State<MyGroupForm> {
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: FutureBuilder(
-                    future: getMyGroupDetails(),
+                    future: getMyGroupNum(),
                     builder: (context, snapshot) {
                       return Container(
                         height: MediaQuery.of(context).size.height * 1 / 7,
@@ -187,11 +192,11 @@ class _MyGroupFormState extends State<MyGroupForm> {
   }
 
   getMyGroupNum() async {
-    var grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
+    grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
   }
 
   getMyGroupDetails() async {
-    grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
+    //grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
     username = await GetRegNo(documentID: useruid).getcollectionusername();
 
     await FirebaseFirestore.instance
@@ -201,6 +206,25 @@ class _MyGroupFormState extends State<MyGroupForm> {
         .then((data) => {
               faculty_name = data['faculty_name'],
               members = data['members'],
+            });
+
+    checkRequest();
+  }
+
+  checkRequest() async {
+    // requests
+    await FirebaseFirestore.instance
+        .collection('group')
+        .doc(grp_num)
+        .get()
+        .then((data) => {
+              //request = data['requests'],
+              requests = data['requests'],
+              if (requests.isNotEmpty)
+                {
+                  print(requests),
+                  showRequest(context),
+                }
             });
   }
 
@@ -222,4 +246,130 @@ class _MyGroupFormState extends State<MyGroupForm> {
       Get.snackbar("Error", e.toString());
     }
   }
+
+  // Request pop up
+  Future showRequest(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: ((context, setState) {
+              return AlertDialog(
+                title: Text("Join request"),
+                titleTextStyle: GoogleFonts.poppins(
+                    color: AppColors.yellow_accent, fontSize: 30),
+                backgroundColor: AppColors.black_background,
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text('Done'),
+                  )
+                ],
+                content: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 150,
+                  color: AppColors.black_background,
+                  child: ListView.builder(
+                      itemCount: requests.length,
+                      itemBuilder: (context, index) {
+                        String key = requests[index].keys.elementAt(0);
+                        return ListTile(
+                          title: Text(
+                            key,
+                            style: GoogleFonts.poppins(color: Colors.white),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    requestAccept(key, index).then(
+                                      (value) => setState(() => requests),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                  )),
+                              IconButton(
+                                  onPressed: () {
+                                    requestReject(key, index).then(
+                                      (value) => setState(() => requests),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.cancel,
+                                    color: Colors.red,
+                                  )),
+                            ],
+                          ),
+                        );
+                      }),
+                ),
+              );
+            }),
+          );
+        });
+  }
+
+  Future requestAccept(user, index) async {
+    print("Accepted");
+    try {
+      // update accepted user's grp_id
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(requests[index][user])
+          .update({'grp_id': grp_num});
+      // add in group members
+      await FirebaseFirestore.instance.collection("group").doc(grp_num).update({
+        "members": FieldValue.arrayUnion([user])
+      });
+      // remove from request list
+      await FirebaseFirestore.instance.collection('group').doc(grp_num).update({
+        'requests': FieldValue.arrayRemove([
+          {user: requests[index][user]}
+        ])
+      }).then((value) {
+        Get.snackbar('Successfull', 'Added member');
+        requests.removeAt(index);
+        print(requests);
+      });
+    } catch (e) {
+      Get.snackbar('Error', 'Action failed');
+    }
+  }
+
+  Future requestReject(user, index) async {
+    print("Rejected");
+    try {
+      await FirebaseFirestore.instance.collection('group').doc(grp_num).update({
+        'requests': FieldValue.arrayRemove([
+          {user: requests[index][user]}
+        ])
+      }).then((value) {
+        Get.snackbar('Successfull', 'Request rejected');
+        requests.removeAt(index);
+      });
+    } catch (e) {
+      Get.snackbar('Error', 'Action failed');
+    }
+  }
 }
+
+// option 2 if error
+// ListTile(
+//             title: const Text('The Title'),
+//             subtitle: const Text('The Subtitle'),
+//             trailing: SizedBox(
+//               width: 150,
+//               child: Row(
+//                 children: [
+//                   IconButton(onPressed: () {}, icon: const Icon(Icons.favorite)),
+//                   IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+//                   IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
+//                 ],
+//               ),
+//             ),
+//           )
