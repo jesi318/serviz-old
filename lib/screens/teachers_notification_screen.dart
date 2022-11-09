@@ -29,18 +29,6 @@ class _TeachersNotificationScreenState
     super.initState();
   }
 
-  Future selectFile() async {
-    final result = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf', 'jpg']);
-    if (result == null) {
-      return;
-    }
-
-    setState(() {
-      pickedFile = result.files.first;
-    });
-  }
-
   List<String> options = ["All Groups", "G2062035", "G2"];
   var selectedOption = 'All Groups';
   final MessagetextController = TextEditingController();
@@ -52,47 +40,50 @@ class _TeachersNotificationScreenState
       backgroundColor: AppColors.grey_background,
       body: Stack(
         children: <Widget>[
-          FutureBuilder(
-              future: getMessages(),
-              builder: (context, snapshot) {
+          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance
+                  .collection('group')
+                  .doc('BTCSAI22')
+                  .collection('group')
+                  .doc("All Groups")
+                  .snapshots(),
+              builder: (context,
+                  AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                      snapshot) {
                 return ListView.builder(
-                  itemCount: messages.length,
-                  shrinkWrap: true,
-                  reverse: true,
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 40, 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            child: Container(
-                              padding: EdgeInsets.all(14),
-                              decoration: BoxDecoration(
-                                color: AppColors.yellow_accent,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(18),
-                                  bottomLeft: Radius.circular(18),
-                                  bottomRight: Radius.circular(18),
+                    itemCount: snapshot.data!['message'].length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 40, 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: Container(
+                                padding: EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  color: AppColors.yellow_accent,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(18),
+                                    bottomLeft: Radius.circular(18),
+                                    bottomRight: Radius.circular(18),
+                                  ),
+                                ),
+                                child: Text(
+                                  snapshot.data!['message'][index],
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 15,
+                                      color: AppColors.black_background),
                                 ),
                               ),
-                              child: Text(
-                                messages[index],
-                                style: GoogleFonts.poppins(
-                                    fontSize: 15,
-                                    color: AppColors.black_background),
-                              ),
                             ),
-                          ),
-                          CustomPaint(
-                              painter: CustomShape(AppColors.yellow_accent)),
-                        ],
-                      ),
-                    );
-                  },
-                );
+                            CustomPaint(
+                                painter: CustomShape(AppColors.yellow_accent)),
+                          ],
+                        ),
+                      );
+                    });
               }),
           Align(
             alignment: Alignment.bottomLeft,
@@ -263,14 +254,14 @@ class _TeachersNotificationScreenState
   }
 
   getMessages() async {
-    await FirebaseFirestore.instance
+    Stream streamdoc = FirebaseFirestore.instance
         .collection('group')
         .doc('BTCSAI22')
         .collection('group')
         .doc('G2062035')
-        .get()
-        .then((data) => {
-              messages = data['message'],
-            });
+        .snapshots();
+
+    print(";;;;;;;;;;;;");
+    return streamdoc;
   }
 }
