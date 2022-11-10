@@ -181,7 +181,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
     await FirebaseFirestore.instance.collection("group").doc(grp_id).update({
       "members": FieldValue.arrayUnion([username]),
-      'faculty_name': faculty_name
+      'faculty_name': faculty_name,
     });
     Get.snackbar('Successfull', 'Created group!');
   }

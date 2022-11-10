@@ -144,7 +144,7 @@ PreferredSizeWidget TeachersHomeAppBar() {
           color: AppColors.black_background,
         ),
         onPressed: () {
-          Get.back();
+          Scaffold.of(context).openDrawer();
         },
         tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
       );

@@ -17,9 +17,9 @@ class GetGrpList extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return TeachersWidgetCard(week: gid, status: 'status');
+            return TeachersWidgetCard(group: gid, status: 'status');
           } else {
-            return TeachersWidgetCard(week: gid, status: "Loading...");
+            return TeachersWidgetCard(group: gid, status: "Loading...");
           }
         }));
   }

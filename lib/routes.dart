@@ -5,6 +5,7 @@ import 'package:serviz/screens/create_join_group.dart';
 import 'package:serviz/screens/homepg.dart';
 import 'package:serviz/screens/login.dart';
 import 'package:serviz/screens/my_group_form.dart';
+import 'package:serviz/screens/teachers_group_form.dart';
 import 'package:serviz/screens/teachers_homepg.dart';
 import 'package:serviz/screens/teachers_notification_screen.dart';
 import 'package:serviz/screens/week_form.dart';
@@ -31,6 +32,7 @@ appRoutes() => [
       GetPage(
           name: '/teachersnotifscreen',
           page: () => TeachersNotificationScreen()),
+      GetPage(name: '/teachersgroupform', page: () => TeachersGroupForm()),
     ];
 
 class MyMiddelware extends GetMiddleware {

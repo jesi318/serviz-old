@@ -22,10 +22,10 @@ class TeachersNotificationScreen extends StatefulWidget {
 class _TeachersNotificationScreenState
     extends State<TeachersNotificationScreen> {
   var pickedFile;
+  int msglen = 0;
   @override
   void initState() {
-    // TODO: implement initState
-    getMessages();
+    // TODO: implement initState`
     super.initState();
   }
 
@@ -50,40 +50,48 @@ class _TeachersNotificationScreenState
               builder: (context,
                   AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
                       snapshot) {
-                return ListView.builder(
-                    itemCount: snapshot.data!['message'].length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 40, 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                              child: Container(
-                                padding: EdgeInsets.all(14),
-                                decoration: BoxDecoration(
-                                  color: AppColors.yellow_accent,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(18),
-                                    bottomLeft: Radius.circular(18),
-                                    bottomRight: Radius.circular(18),
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError && snapshot.hasData) {
+                  return const Center(child: Text('No data'));
+                } else {
+                  return ListView.builder(
+                      itemCount: snapshot.data!['message'].length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 40, 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  padding: EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.yellow_accent,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(18),
+                                      bottomLeft: Radius.circular(18),
+                                      bottomRight: Radius.circular(18),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    snapshot.data!['message'][index],
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        color: AppColors.black_background),
                                   ),
                                 ),
-                                child: Text(
-                                  snapshot.data!['message'][index],
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 15,
-                                      color: AppColors.black_background),
-                                ),
                               ),
-                            ),
-                            CustomPaint(
-                                painter: CustomShape(AppColors.yellow_accent)),
-                          ],
-                        ),
-                      );
-                    });
+                              CustomPaint(
+                                  painter:
+                                      CustomShape(AppColors.yellow_accent)),
+                            ],
+                          ),
+                        );
+                      });
+                }
               }),
           Align(
             alignment: Alignment.bottomLeft,
@@ -132,40 +140,6 @@ class _TeachersNotificationScreenState
                                         color: AppColors.white_text),
                                     elevation: 5,
                                     actions: [
-                                      // DropDownMultiSelect(
-                                      //   options: controller.options,
-                                      //   whenEmpty: 'Select group',
-                                      //   hintStyle: GoogleFonts.poppins(
-                                      //       fontSize: 15,
-                                      //       color: AppColors.white_text),
-                                      //   decoration: InputDecoration(
-                                      //       fillColor:
-                                      //           AppColors.black_background),
-                                      //   onChanged: (value) {
-                                      //     controller.selectedOptionList.value =
-                                      //         value;
-                                      //     controller.selectedOption.value = '';
-                                      //     controller.selectedOptionList.value
-                                      //         .forEach((element) {
-                                      //       controller.selectedOption.value =
-                                      //           controller
-                                      //                   .selectedOption.value +
-                                      //               element;
-                                      //     });
-                                      //   },
-                                      //   selectedValues:
-                                      //       controller.selectedOptionList.value,
-                                      // ),
-                                      // TextButton(
-                                      //     onPressed: () {
-                                      //       print(controller
-                                      //           .selectedOption.value);
-
-                                      //       print(
-                                      //           controller.selectedOptionList);
-                                      //     },
-                                      //     child: Text('Send Message'))
-
                                       DropdownButtonFormField(
                                           decoration: InputDecoration(
                                               border: OutlineInputBorder(
@@ -195,7 +169,6 @@ class _TeachersNotificationScreenState
                                               selectedOption = val.toString();
                                             });
                                           }),
-
                                       TextButton(
                                           onPressed: () {
                                             selectedOption == 'All Groups'
@@ -203,6 +176,7 @@ class _TeachersNotificationScreenState
                                                     MessagetextController.text)
                                                 : postBroadcastmesaagetoFirestore(
                                                     MessagetextController.text);
+                                            setState(() {});
                                           },
                                           child: Text('Send Message'))
                                     ],
@@ -251,17 +225,9 @@ class _TeachersNotificationScreenState
         "message": FieldValue.arrayUnion([val])
       });
     }
-  }
 
-  getMessages() async {
-    Stream streamdoc = FirebaseFirestore.instance
-        .collection('group')
-        .doc('BTCSAI22')
-        .collection('group')
-        .doc('G2062035')
-        .snapshots();
+    Get.snackbar('Successfull', 'message sent to all groups');
 
-    print(";;;;;;;;;;;;");
-    return streamdoc;
+    setState(() {});
   }
 }

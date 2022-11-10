@@ -3,13 +3,15 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:serviz/screens/teachers_group_form.dart';
 
 import '../utils/colors.dart';
 
 class TeachersWidgetCard extends StatefulWidget {
-  const TeachersWidgetCard({Key? key, required this.week, required this.status})
+  const TeachersWidgetCard(
+      {Key? key, required this.group, required this.status})
       : super(key: key);
-  final String week;
+  final String group;
   final String status;
 
   @override
@@ -26,7 +28,9 @@ class _TeachersWidgetCardState extends State<TeachersWidgetCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.to(TeachersGroupForm(), arguments: widget.group);
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
@@ -67,7 +71,7 @@ class _TeachersWidgetCardState extends State<TeachersWidgetCard> {
                           Container(
                             width: 100,
                             child: Text(
-                              widget.week,
+                              widget.group,
                               style: GoogleFonts.poppins(
                                   color: Colors.black,
                                   fontSize: 18.0,
@@ -80,7 +84,7 @@ class _TeachersWidgetCardState extends State<TeachersWidgetCard> {
                             children: [
                               Align(
                                 alignment: AlignmentDirectional.bottomEnd,
-                                child: Text("Status :  ",
+                                child: Text("Status :" + widget.group,
                                     style: GoogleFonts.poppins(
                                         color: Colors.black,
                                         fontSize: 15.0,
