@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/screens/teachers_group_form.dart';
@@ -29,7 +28,7 @@ class _TeachersWidgetCardState extends State<TeachersWidgetCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(TeachersGroupForm(), arguments: widget.group);
+        Get.toNamed('/teachersgroupform', arguments: widget.group);
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -84,7 +83,7 @@ class _TeachersWidgetCardState extends State<TeachersWidgetCard> {
                             children: [
                               Align(
                                 alignment: AlignmentDirectional.bottomEnd,
-                                child: Text("Status :" + widget.group,
+                                child: Text("Status :",
                                     style: GoogleFonts.poppins(
                                         color: Colors.black,
                                         fontSize: 15.0,

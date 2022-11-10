@@ -53,7 +53,7 @@ class _TeachersNotificationScreenState
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (snapshot.hasError && snapshot.hasData) {
+                if (!snapshot.hasData) {
                   return const Center(child: Text('No data'));
                 } else {
                   return ListView.builder(
