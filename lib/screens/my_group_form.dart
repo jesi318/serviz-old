@@ -336,6 +336,7 @@ class _MyGroupFormState extends State<MyGroupForm> {
         requests.removeAt(index);
         print(requests);
       });
+      //remove from users-left
     } catch (e) {
       Get.snackbar('Error', 'Action failed');
     }
