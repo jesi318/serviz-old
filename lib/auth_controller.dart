@@ -104,6 +104,7 @@ class AuthController extends GetxController {
     userModel.name = name;
     userModel.reg_no = reg_no;
     userModel.classname = classname;
+    userModel.role = 'student';
 
     await firebaseFirestore
         .collection("users")
