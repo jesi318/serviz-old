@@ -41,6 +41,13 @@ class AuthController extends GetxController {
       await auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {postDetailsToFirestore(reg_no, classname, name)});
+      // add user to meta/users-left
+      await FirebaseFirestore.instance
+          .collection("meta")
+          .doc("users-left")
+          .update({
+        classname: FieldValue.arrayUnion([name])
+      });
     } catch (e) {
       Get.snackbar(
         "About User",
