@@ -17,54 +17,38 @@ class ViewGroups extends StatefulWidget {
 }
 
 class _ViewGroupsState extends State<ViewGroups> {
-  List Items = [];
-  var _future;
+  List selClass = [];
   List gid = [];
   List gnullid = [];
-  String? _selectedval = 'Week 1';
+  String? _selectedval = 'AIML';
   FocusNode DropFocusNode = new FocusNode();
+
   Future getWeekId() async {
     await FirebaseFirestore.instance
-        .collection('group')
-        .doc('g1')
-        .collection('week')
+        .collection("meta")
+        .doc("class")
         .get()
-        .then(
-          (snapshot) => snapshot.docs.forEach((element) {
-            print(element.reference);
-            Items.add(element.reference.id);
-          }),
-        );
+        .then((value) => selClass = List.from(value.data()!['names']));
   }
 
   Future getGroupList() async {
-    await FirebaseFirestore.instance.collection('group').get().then(
-          (snapshot) => snapshot.docs.forEach((element) {
-            print(element.reference);
-            gid.add(element.reference.id);
-          }),
-        );
+    await FirebaseFirestore.instance
+        .collection("meta")
+        .doc("groups-left")
+        .get()
+        .then((value) => gid = List.from(value.data()!['AIML']));
   }
 
-  getusernull() async {
+  Future getusernull() async {
     await FirebaseFirestore.instance
-        .collection("users")
-        .where("grp_id", isEqualTo: "")
+        .collection("meta")
+        .doc("users-left")
         .get()
-        .then(
-          (snapshot) => snapshot.docs.forEach((element) {
-            print(element['name']);
-            gnullid.add(element['name'].toString());
-          }),
-        );
-    print("######1");
-    print(gnullid);
+        .then((value) => gnullid = List.from(value.data()!['AIML']));
   }
 
   @override
   void initState() {
-    _future = getWeekId();
-    getusernull();
     // TODO: implement initState
     super.initState();
   }
@@ -88,7 +72,7 @@ class _ViewGroupsState extends State<ViewGroups> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 child: FutureBuilder(
-                    future: _future,
+                    future: getWeekId(),
                     builder: (context, snapshot) {
                       return DropdownButtonFormField(
                           decoration: InputDecoration(
@@ -103,10 +87,12 @@ class _ViewGroupsState extends State<ViewGroups> {
                           dropdownColor: AppColors.black_background,
                           borderRadius: BorderRadius.circular(30),
                           value: _selectedval,
-                          items: Items.map((item) => DropdownMenuItem(
-                                child: Text(item),
-                                value: item,
-                              )).toList(),
+                          items: selClass
+                              .map((item) => DropdownMenuItem(
+                                    child: Text(item),
+                                    value: item,
+                                  ))
+                              .toList(),
                           onChanged: (val) {
                             setState(() {
                               _selectedval = val.toString();
@@ -146,7 +132,7 @@ class _ViewGroupsState extends State<ViewGroups> {
 
             Expanded(
               child: TabBarView(children: [
-                //Tab 1
+                // Tab 1 - groups
                 Center(
                     child: FutureBuilder(
                   future: getGroupList(),
@@ -154,25 +140,26 @@ class _ViewGroupsState extends State<ViewGroups> {
                     return ListView.builder(
                         // controller: _controller,
                         physics: BouncingScrollPhysics(),
-                        reverse: true,
                         itemCount: gid.length,
                         itemBuilder: (context, index) {
                           return GetGrpListAvl(gid: gid[index]);
                         });
                   },
                 )),
-
+                // Tab 2 - users
                 Center(
-                    child: ListView.builder(
+                    child: FutureBuilder(
+                  future: getusernull(),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
                         // controller: _controller,
                         physics: BouncingScrollPhysics(),
-                        reverse: true,
                         itemCount: gnullid.length,
                         itemBuilder: (context, index) {
-                          return GrouplistWidgetCard(
-                            grp: gnullid[index],
-                          );
-                        }))
+                          return GrouplistWidgetCard(grp: gnullid[index]);
+                        });
+                  },
+                )),
               ]),
             )
           ],
