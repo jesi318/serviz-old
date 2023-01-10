@@ -240,6 +240,18 @@ class _MyGroupFormState extends State<MyGroupForm> {
           .doc(useruid)
           .update({'grp_id': 'null'});
 
+      // add user to meta/users-left
+      var collection = FirebaseFirestore.instance.collection('users');
+      var docSnapshot = await collection.doc(useruid).get();
+      Map<String, dynamic>? data = docSnapshot.data();
+      String classname = data?['classname'];
+      await FirebaseFirestore.instance
+          .collection("meta")
+          .doc("users-left")
+          .update({
+        classname: FieldValue.arrayUnion([username])
+      });
+
       Get.snackbar("Successfull", "Exited group");
       Get.offAllNamed('/createjoingroup');
     } catch (e) {
