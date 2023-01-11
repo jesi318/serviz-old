@@ -349,6 +349,16 @@ class _MyGroupFormState extends State<MyGroupForm> {
         print(requests);
       });
       //remove from users-left
+      var collection = FirebaseFirestore.instance.collection('users');
+      var docSnapshot = await collection.doc(useruid).get();
+      Map<String, dynamic>? data = docSnapshot.data();
+      String classname = data?['classname'];
+      await FirebaseFirestore.instance
+          .collection('meta')
+          .doc('users-left')
+          .update({
+        classname: FieldValue.arrayRemove([username])
+      });
     } catch (e) {
       Get.snackbar('Error', 'Action failed');
     }
