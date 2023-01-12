@@ -184,5 +184,17 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       'faculty_name': faculty_name
     });
     Get.snackbar('Successfull', 'Created group!');
+
+    // add user to meta/users-left
+    var collection = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collection.doc(useruid).get();
+    Map<String, dynamic>? data = docSnapshot.data();
+    String classname = data?['classname'];
+    await FirebaseFirestore.instance
+        .collection("meta")
+        .doc("groups-left")
+        .update({
+      classname: FieldValue.arrayUnion([username])
+    });
   }
 }
