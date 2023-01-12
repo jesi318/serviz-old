@@ -46,7 +46,7 @@ class _ViewGroupsState extends State<ViewGroups> {
         .collection("meta")
         .doc("users-left")
         .get()
-        .then((value) => gnullid = List.from(value.data()!['AIML']));
+        .then((value) => gnullid = List.from(value.data()![_selectedval]));
   }
 
   @override
@@ -135,23 +135,23 @@ class _ViewGroupsState extends State<ViewGroups> {
             Expanded(
               child: TabBarView(children: [
                 // Tab 1 - groups
-                gid != null
-                    ? Center(
-                        child: FutureBuilder(
-                        future: getGroupList(),
-                        builder: (context, snapshot) {
-                          return ListView.builder(
-                              // controller: _controller,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: gid.length,
-                              itemBuilder: (context, index) {
-                                return GrouplistWidgetCard(
-                                  grp: gid[index],
-                                );
-                              });
-                        },
-                      ))
-                    : Container(),
+
+                Center(
+                    child: FutureBuilder(
+                  future: getGroupList(),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
+                        // controller: _controller,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: gid.length,
+                        itemBuilder: (context, index) {
+                          return GrouplistWidgetCard(
+                            grp: gid[index],
+                          );
+                        });
+                  },
+                )),
+
                 // Tab 2 - users
                 Center(
                     child: FutureBuilder(
