@@ -9,6 +9,8 @@ import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/GrouplistCard.dart';
 import 'package:serviz/widgets/appbar.dart';
 
+import '../widgets/TeachersWidgetcard.dart';
+
 class ViewGroups extends StatefulWidget {
   const ViewGroups({super.key});
 
@@ -18,7 +20,7 @@ class ViewGroups extends StatefulWidget {
 
 class _ViewGroupsState extends State<ViewGroups> {
   List selClass = [];
-  List gid = [];
+  List gid = ['null'];
   List gnullid = [];
   String? _selectedval = 'AIML';
   FocusNode DropFocusNode = new FocusNode();
@@ -36,7 +38,7 @@ class _ViewGroupsState extends State<ViewGroups> {
         .collection("meta")
         .doc("groups-left")
         .get()
-        .then((value) => gid = List.from(value.data()!['AIML']));
+        .then((value) => gid = List.from(value.data()![_selectedval]));
   }
 
   Future getusernull() async {
@@ -133,19 +135,23 @@ class _ViewGroupsState extends State<ViewGroups> {
             Expanded(
               child: TabBarView(children: [
                 // Tab 1 - groups
-                Center(
-                    child: FutureBuilder(
-                  future: getGroupList(),
-                  builder: (context, snapshot) {
-                    return ListView.builder(
-                        // controller: _controller,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: gid.length,
-                        itemBuilder: (context, index) {
-                          return GetGrpListAvl(gid: gid[index]);
-                        });
-                  },
-                )),
+                gid != null
+                    ? Center(
+                        child: FutureBuilder(
+                        future: getGroupList(),
+                        builder: (context, snapshot) {
+                          return ListView.builder(
+                              // controller: _controller,
+                              physics: BouncingScrollPhysics(),
+                              itemCount: gid.length,
+                              itemBuilder: (context, index) {
+                                return GrouplistWidgetCard(
+                                  grp: gid[index],
+                                );
+                              });
+                        },
+                      ))
+                    : Container(),
                 // Tab 2 - users
                 Center(
                     child: FutureBuilder(

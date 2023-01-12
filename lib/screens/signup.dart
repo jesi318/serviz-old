@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:serviz/auth_controller.dart';
 import 'package:serviz/utils/colors.dart';
@@ -22,8 +23,15 @@ class _SignUpPageState extends State<SignUpPage> {
   FocusNode emailidmyFocusNode = new FocusNode();
   FocusNode passwordmyFocusNode = new FocusNode();
   FocusNode classFocusNode = new FocusNode();
-
   bool _repw_isObscure = true;
+  List selClass = ['AIML', 'DS', 'IOT'];
+  String _selectedval = 'AIML';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +84,13 @@ class _SignUpPageState extends State<SignUpPage> {
                               _emailidtextController.text.trim(),
                               _passwordtextController.text,
                               _regnotextController.text,
-                              _classController.text,
+                              _selectedval,
                               _nametextController.text,
                             );
 
                             AuthController.instance.postDetailsToFirestore(
                                 _regnotextController.text,
-                                _classController.text,
+                                _selectedval.toString(),
                                 _nametextController.text);
 
                             //What to do on pressed
@@ -107,7 +115,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                         color: AppColors.black_background,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15),
-                                        
                                   ),
                                 ),
                               ),
@@ -341,44 +348,56 @@ class _SignUpPageState extends State<SignUpPage> {
       );
 
   //retype password
-  Widget classkey() => TextField(
-        focusNode: classFocusNode,
-        cursorColor: AppColors.yellow_accent,
-        controller: _classController,
-        textInputAction: TextInputAction.next,
-        onSubmitted: (_) => FocusScope.of(context).unfocus(),
-        style: GoogleFonts.poppins(
-          color: AppColors.white_text,
-          fontWeight: FontWeight.bold,
-        ),
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.white_text),
-              borderRadius: BorderRadius.circular(20)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.yellow_accent),
-              borderRadius: BorderRadius.circular(20)),
-          labelText: 'Class',
-          labelStyle: GoogleFonts.poppins(
-            color: classFocusNode.hasFocus
-                ? AppColors.yellow_accent
-                : AppColors.white_text,
-          ),
-          // suffixIcon: _textController.text.isEmpty
-          //     ? Container(
-          //         width: 0,
-          //       )
-          //     : IconButton(
-          //         icon: Icon(
-          //           Icons.clear_rounded,
-          //           color: AppColors.yellow_accent,
-          //         ),
-          //         onPressed: () {
-          //           _textController.clear();
-          //         },
-          //       ),
-        ),
-      );
+  Widget classkey() => DropdownButtonFormField(
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
+      focusColor: AppColors.yellow_accent,
+      alignment: AlignmentDirectional.center,
+      style: GoogleFonts.poppins(
+        color: AppColors.white_text,
+        fontWeight: FontWeight.bold,
+      ),
+      dropdownColor: AppColors.black_background,
+      borderRadius: BorderRadius.circular(30),
+      value: _selectedval,
+      items: selClass
+          .map((item) => DropdownMenuItem(
+                child: Text(item),
+                value: item,
+              ))
+          .toList(),
+      onChanged: (val) {
+        setState(() {
+          _selectedval = val.toString();
+        });
+      });
+  //
+  // TextField(
+  //       focusNode: classFocusNode,
+  //       cursorColor: AppColors.yellow_accent,
+  //       controller: _classController,
+  //       textInputAction: TextInputAction.next,
+  //       onSubmitted: (_) => FocusScope.of(context).unfocus(),
+  //       style: GoogleFonts.poppins(
+  //         color: AppColors.white_text,
+  //         fontWeight: FontWeight.bold,
+  //       ),
+  //       decoration: InputDecoration(
+  //         enabledBorder: OutlineInputBorder(
+  //             borderSide: BorderSide(color: AppColors.white_text),
+  //             borderRadius: BorderRadius.circular(20)),
+  //         focusedBorder: OutlineInputBorder(
+  //             borderSide: BorderSide(color: AppColors.yellow_accent),
+  //             borderRadius: BorderRadius.circular(20)),
+  //         labelText: 'Class',
+  //         labelStyle: GoogleFonts.poppins(
+  //           color: classFocusNode.hasFocus
+  //               ? AppColors.yellow_accent
+  //               : AppColors.white_text,
+  //         ),
+
+  //   ),
+  // );
 }
 
 class MyBehavior extends ScrollBehavior {

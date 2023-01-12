@@ -89,7 +89,7 @@ class AuthController extends GetxController {
     await auth.signOut();
   }
 
-  postDetailsToFirestore(String reg_no, String classname, String name) async {
+  postDetailsToFirestore(String reg_no, var classname, String name) async {
     // calling our firestore
     // calling our model
     // sending these values
