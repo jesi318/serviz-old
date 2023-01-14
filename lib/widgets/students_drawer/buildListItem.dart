@@ -81,7 +81,9 @@ Widget buildListItems(BuildContext context) {
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.normal, color: AppColors.yellow_accent),
         ),
-        onTap: () {},
+        onTap: () {
+          Get.toNamed('/allprojectspage');
+        },
       ),
       SizedBox(
         height: 30,

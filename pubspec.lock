@@ -413,6 +413,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  tap_to_expand:
+    dependency: "direct main"
+    description:
+      name: tap_to_expand
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.1"
   term_glyph:
     dependency: transitive
     description:

@@ -44,6 +44,7 @@ dependencies:
   firebase_core: ^2.1.0
   cloud_firestore: ^4.0.2
   firebase_storage: ^11.0.2
+  tap_to_expand: ^0.6.1
 
 dev_dependencies:
   flutter_test:
