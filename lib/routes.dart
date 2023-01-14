@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:serviz/screens/requestScreen.dart';
 import 'package:serviz/screens/create_group.dart';
 import 'package:serviz/screens/join_group_form.dart';
 import 'package:serviz/screens/create_join_group.dart';
@@ -29,6 +30,7 @@ appRoutes() => [
       GetPage(name: '/mygroupform', page: () => MyGroupForm()),
       GetPage(name: '/teachershomepage', page: () => TeachersHomePage()),
       GetPage(name: '/viewgroupspage', page: () => ViewGroups()),
+      GetPage(name: '/submitrequestspage', page: () => RequestScreen()),
     ];
 
 class MyMiddelware extends GetMiddleware {

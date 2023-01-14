@@ -7,10 +7,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/colors.dart';
 
 class TeachersWidgetCard extends StatefulWidget {
-  const TeachersWidgetCard({Key? key, required this.week, this.status})
+  const TeachersWidgetCard({Key? key, required this.week, required this.status})
       : super(key: key);
   final String week;
-  final String? status;
+  final String status;
 
   @override
   State<TeachersWidgetCard> createState() => _TeachersWidgetCardState();
@@ -76,31 +76,26 @@ class _TeachersWidgetCardState extends State<TeachersWidgetCard> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          widget.status != null
-                              ? Row(
-                                  children: [
-                                    Align(
-                                      alignment: AlignmentDirectional.bottomEnd,
-                                      child: Text("Status :  ",
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.black,
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.normal)),
-                                    ),
-                                    Align(
-                                      alignment: AlignmentDirectional.bottomEnd,
-                                      child: Text(widget.status.toString(),
-                                          style: GoogleFonts.poppins(
-                                              color: Colors.green,
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.normal)),
-                                    )
-                                  ],
-                                )
-                              : Container(
-                                  height: 0,
-                                  width: 0,
-                                ),
+                          Row(
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional.bottomEnd,
+                                child: Text("Status :  ",
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.black,
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.normal)),
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional.bottomEnd,
+                                child: Text(widget.status,
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.green,
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.normal)),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       SizedBox(

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/auth_controller.dart';
 import 'package:serviz/functions/getusername.dart';
+import 'package:serviz/screens/requestScreen.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -104,15 +105,17 @@ Widget buildListItems(BuildContext context) {
       ),
       ListTile(
         leading: const Icon(
-          Icons.settings,
+          Icons.hdr_weak_rounded,
           color: AppColors.yellow_accent,
         ),
         title: Text(
-          'Settings',
+          'Requests',
           style: GoogleFonts.poppins(
               fontWeight: FontWeight.normal, color: AppColors.yellow_accent),
         ),
-        onTap: () {},
+        onTap: () {
+          Get.toNamed('submitrequestspage');
+        },
       ),
       SizedBox(
         height: 30,
