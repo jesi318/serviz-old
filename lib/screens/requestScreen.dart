@@ -7,6 +7,9 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/functions/getusername.dart';
 import 'package:serviz/utils/colors.dart';
+import 'package:serviz/widgets/GrouplistCard.dart';
+import 'package:serviz/widgets/RequestsWidgetcard.dart';
+import 'package:serviz/widgets/TeachersWidgetcard.dart';
 import 'package:serviz/widgets/appbar.dart';
 
 class RequestScreen extends StatefulWidget {
@@ -24,72 +27,88 @@ class _RequestScreenState extends State<RequestScreen> {
   FocusNode mydescFocusNode = new FocusNode();
   String username = "";
   String grp_id = "";
+  List<String> requests = [
+    'request1',
+    'request2',
+    'request3',
+    'request1',
+    'request2',
+    'request3',
+    'request1',
+    'request2',
+    'request3'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyBackAppBar(),
       backgroundColor: AppColors.grey_background,
-      body: SingleChildScrollView(
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Titletext(),
-                SizedBox(
-                  height: 20,
-                ),
-                Descriptiontext(),
-                SizedBox(
-                  height: 25,
-                ),
-                Bounce(
-                  duration: Duration(milliseconds: 110),
-                  onPressed: () async {
-                    await FirebaseFirestore.instance
-                        .collection("request")
-                        .doc("notification")
-                        .update({
-                      'AIML': FieldValue.arrayUnion([
-                        {
-                          'title': _titletextController.text,
-                          'description': _descriptiontextController.text,
-                          'status': 'pending'
-                        }
-                      ])
-                    });
-                  },
-                  child: Center(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.height * 1 / 15,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: AppColors.yellow_accent),
+      body: Container(
+        child: Stack(children: [
+          SingleChildScrollView(
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Titletext(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Descriptiontext(),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Bounce(
+                      duration: Duration(milliseconds: 110),
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection("request")
+                            .doc("notification")
+                            .update({
+                          'AIML': FieldValue.arrayUnion([
+                            {
+                              'title': _titletextController.text,
+                              'description': _descriptiontextController.text,
+                              'status': 'pending'
+                            }
+                          ])
+                        });
+                      },
                       child: Center(
-                        child: Bounce(
-                          duration: Duration(milliseconds: 110),
-                          onPressed: () {
-                            //do the auth control here
-                          },
-                          child: Text(
-                            'Send Request',
-                            style: GoogleFonts.poppins(
-                                color: AppColors.black_background,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: MediaQuery.of(context).size.height * 1 / 15,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: AppColors.yellow_accent),
+                          child: Center(
+                            child: Bounce(
+                              duration: Duration(milliseconds: 110),
+                              onPressed: () {
+                                //do the auth control here
+                              },
+                              child: Text(
+                                'Send Request',
+                                style: GoogleFonts.poppins(
+                                    color: AppColors.black_background,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          bottomDetailsSheet(),
+        ]),
       ),
     );
   }
@@ -170,4 +189,28 @@ class _RequestScreenState extends State<RequestScreen> {
                 ),
         ),
       );
+
+  Widget bottomDetailsSheet() {
+    return DraggableScrollableSheet(
+      initialChildSize: .2,
+      minChildSize: .2,
+      maxChildSize: 1,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColors.black_background,
+            ),
+            child: ListView.builder(
+                controller: scrollController,
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: requests.length,
+                itemBuilder: (context, index) {
+                  return RequestWidgetCard(
+                      request: requests[index], status: requests[index]);
+                }));
+      },
+    );
+  }
 }
