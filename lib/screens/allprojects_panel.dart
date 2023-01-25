@@ -5,6 +5,7 @@ import 'package:serviz/functions/get%20_project_details.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/expansion_tile_card.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AllProjectsPanel extends StatefulWidget {
   const AllProjectsPanel({super.key});
@@ -14,6 +15,11 @@ class AllProjectsPanel extends StatefulWidget {
 }
 
 class _AllProjectsPanelState extends State<AllProjectsPanel> {
+  // controller
+  final searchEditingController = new TextEditingController();
+  // focus node
+  FocusNode searchFocusNode = new FocusNode();
+
   List<String> projectID = ['null'];
 
   Future getDocs() async {
@@ -30,12 +36,58 @@ class _AllProjectsPanelState extends State<AllProjectsPanel> {
   Widget build(BuildContext context) {
     CollectionReference projects =
         FirebaseFirestore.instance.collection('projects');
+
+    // Search field
+    final searchField = TextFormField(
+      focusNode: searchFocusNode,
+      cursorColor: AppColors.yellow_accent,
+      autofocus: false,
+      controller: searchEditingController,
+      keyboardType: TextInputType.name,
+      onSaved: (newValue) {
+        searchEditingController.text = newValue!;
+      },
+      textInputAction: TextInputAction.done,
+      style: GoogleFonts.poppins(
+        color: AppColors.white_text,
+        fontWeight: FontWeight.bold,
+      ),
+      onTap: () {
+        print('Search');
+        print(searchEditingController.text);
+      },
+      decoration: InputDecoration(
+        suffixIcon: Icon(
+          Icons.search_outlined,
+          color: AppColors.yellow_accent,
+        ),
+        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        labelText: 'Search',
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.white_text),
+            borderRadius: BorderRadius.circular(20)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.yellow_accent),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        labelStyle: GoogleFonts.poppins(
+          color: searchFocusNode.hasFocus
+              ? AppColors.yellow_accent
+              : AppColors.white_text,
+        ),
+      ),
+    );
+
     return Scaffold(
       backgroundColor: AppColors.grey_background,
       appBar: MyBackAppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 20,
+          ),
+          searchField,
           SizedBox(
             height: 10,
           ),
