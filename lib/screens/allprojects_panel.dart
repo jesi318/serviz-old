@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:serviz/functions/get%20_project_details.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/expansion_tile_card.dart';
@@ -20,16 +19,48 @@ class _AllProjectsPanelState extends State<AllProjectsPanel> {
   // focus node
   FocusNode searchFocusNode = new FocusNode();
 
-  List<String> projectID = ['null'];
+  List<Map<String, dynamic>> allProjects = [];
+  List<Map<String, dynamic>> foundProjects = [
+    {'start': 'yeah'}
+  ];
+
+  @override
+  initState() {
+    super.initState();
+  }
 
   Future getDocs() async {
-    await FirebaseFirestore.instance
-        .collection('projects')
-        .get()
-        .then((snapshot) => snapshot.docs.forEach((element) {
-              projectID = [];
-              projectID.add(element.reference.id);
-            }));
+    if (allProjects.isEmpty) {
+      foundProjects = [];
+      await FirebaseFirestore.instance
+          .collection('projects')
+          .get()
+          .then((snapshot) => snapshot.docs.forEach((element) {
+                allProjects.add(element.data());
+              }));
+      foundProjects = allProjects;
+    }
+  }
+
+  void _runFilter(String enteredKeyword) {
+    List<Map<String, dynamic>> results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      results = allProjects;
+    } else {
+      results = allProjects
+          .where((project) => project['title']
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+      print(results);
+      // we use the toLowerCase() method to make it case-insensitive
+    }
+
+    // Refresh the UI
+    setState(() {
+      foundProjects = results;
+    });
   }
 
   @override
@@ -52,9 +83,8 @@ class _AllProjectsPanelState extends State<AllProjectsPanel> {
         color: AppColors.white_text,
         fontWeight: FontWeight.bold,
       ),
-      onTap: () {
-        print('Search');
-        print(searchEditingController.text);
+      onChanged: (value) {
+        _runFilter(value);
       },
       decoration: InputDecoration(
         suffixIcon: Icon(
@@ -92,19 +122,29 @@ class _AllProjectsPanelState extends State<AllProjectsPanel> {
             height: 10,
           ),
           Expanded(
-              child: FutureBuilder(
-            future: getDocs(),
-            builder: (context, snapshot) {
-              return ListView.builder(
-                  // controller: _controller,
-                  physics: BouncingScrollPhysics(),
-                  reverse: true,
-                  itemCount: projectID.length,
-                  itemBuilder: (context, index) {
-                    return Get_project_details(projectID: projectID[index]);
-                  });
-            },
-          )),
+            child: foundProjects.isNotEmpty
+                ? FutureBuilder(
+                    future: getDocs(),
+                    builder: (context, snapshot) {
+                      return ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: foundProjects.length,
+                          itemBuilder: (context, index) {
+                            return ExpansionTileCard(
+                              projectTitle: foundProjects[index]['title'],
+                              projectDescription: foundProjects[index]['desc'],
+                            );
+                          });
+                    },
+                  )
+                : const Text(
+                    'No projects found',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: AppColors.white_text,
+                    ),
+                  ),
+          ),
         ],
       ),
     );
