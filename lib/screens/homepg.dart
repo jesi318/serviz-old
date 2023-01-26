@@ -5,13 +5,17 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:get/get.dart';
 import 'package:serviz/functions/get_week.dart';
+import 'package:serviz/screens/submissions_screen.dart';
 import 'package:serviz/utils/colors.dart';
 import 'package:serviz/widgets/appbar.dart';
 import 'package:serviz/widgets/students_drawer/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:serviz/widgets/progress_widget.dart';
 import 'package:serviz/widgets/widget_card.dart';
+
+import '../functions/get_regno.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,6 +25,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final String week = "Week";
   List<String> wid = [];
+  String grp_num = "";
+  String ideaExists = "false";
+  String status = "";
 
   ScrollController? _controller;
 
@@ -36,6 +43,37 @@ class _HomePageState extends State<HomePage> {
             wid.add(element.reference.id);
           }),
         );
+
+    return wid;
+  }
+
+  getIdeaExists() async {
+    grp_num = await GetRegNo(documentID: useruid).getcollectiongrpno();
+
+    ideaExists = await FirebaseFirestore.instance
+        .collection("meta")
+        .doc("project-ideas")
+        .get()
+        .then((value) {
+      if (value.get(grp_num) != null) {
+        ideaExists = "true";
+      } else {
+        ideaExists = "false";
+      }
+
+      return ideaExists;
+    });
+
+    await FirebaseFirestore.instance
+        .collection('meta')
+        .doc('project-ideas')
+        .get()
+        .then((DocumentSnapshot snapshot) {
+      var statustemp = snapshot.get(grp_num);
+
+      Map mapEventData = statustemp;
+      status = mapEventData['status'];
+    });
   }
 
   @override
@@ -48,7 +86,9 @@ class _HomePageState extends State<HomePage> {
     //       _controller!.position.maxScrollExtent,
     //     );
     //   },
-    // );
+    // );]
+    getIdeaExists();
+    super.initState();
   }
 
   @override
@@ -59,9 +99,28 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppColors.grey_background,
         body: Column(
           children: [
-            Row(
-              children: [ProgressWidget()],
-            ),
+            FutureBuilder(
+                future: getIdeaExists(),
+                builder: (context, snapshot) {
+                  return Row(
+                    children: [
+                      (ideaExists == "true" && status == "pending") ||
+                              ideaExists == "false"
+                          ? InkWell(
+                              onTap: () {
+                                Get.to(SubmissionsScreen(
+                                  grp_num: grp_num,
+                                  ideaExists: ideaExists,
+                                  status: status,
+                                ));
+                              },
+                              child: Text(ideaExists))
+                          : ideaExists == "true" && status == "approved"
+                              ? ProgressWidget()
+                              : Container(),
+                    ],
+                  );
+                }),
             Expanded(
                 child: FutureBuilder(
               future: getWeekId(),

@@ -15,9 +15,7 @@ class ProgressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Get.to(SubmissionsScreen());
-      },
+      onTap: () {},
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
