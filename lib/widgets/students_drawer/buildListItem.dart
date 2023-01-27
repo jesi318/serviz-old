@@ -52,7 +52,7 @@ Widget buildListItems(BuildContext context) {
               return GetUserName(documentID: useruid);
             })),
             SizedBox(
-              height: 56,
+              height: 20,
             ),
             Text(
               FirebaseAuth.instance.currentUser!.email.toString(),
@@ -65,7 +65,7 @@ Widget buildListItems(BuildContext context) {
         ),
       ),
       SizedBox(
-        height: 60,
+        height: 20,
       ),
       Divider(
         height: 20,
@@ -100,6 +100,23 @@ Widget buildListItems(BuildContext context) {
         ),
         onTap: () {
           Get.toNamed('/mygroupform');
+        },
+      ),
+      SizedBox(
+        height: 30,
+      ),
+      ListTile(
+        leading: Icon(
+          Icons.library_books,
+          color: AppColors.yellow_accent,
+        ),
+        title: Text(
+          'Document Submissions',
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.normal, color: AppColors.yellow_accent),
+        ),
+        onTap: () {
+          Get.toNamed('/docsubmissionpage');
         },
       ),
       SizedBox(
