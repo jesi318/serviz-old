@@ -32,8 +32,6 @@ class _UploadWeekFormState extends State<UploadWeekForm> {
   String ss = "";
   s() async {
     var sv = await GetRegNo(documentID: useruid).getcollectiongrpno();
-
-    print(sv);
     ss = sv;
   }
 

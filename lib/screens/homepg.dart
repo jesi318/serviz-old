@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   String grp_num = "";
   String ideaExists = "false";
   String status = "";
+  bool isLoading = false;
 
   ScrollController? _controller;
 
@@ -102,24 +103,140 @@ class _HomePageState extends State<HomePage> {
             FutureBuilder(
                 future: getIdeaExists(),
                 builder: (context, snapshot) {
-                  return Row(
-                    children: [
-                      (ideaExists == "true" && status == "pending") ||
-                              ideaExists == "false"
-                          ? InkWell(
-                              onTap: () {
-                                Get.to(SubmissionsScreen(
-                                  grp_num: grp_num,
-                                  ideaExists: ideaExists,
-                                  status: status,
-                                ));
-                              },
-                              child: Text(ideaExists))
-                          : ideaExists == "true" && status == "approved"
-                              ? ProgressWidget()
-                              : Container(),
-                    ],
-                  );
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Row(
+                      children: [
+                        (ideaExists == "true" && status == "pending") ||
+                                ideaExists == "false"
+                            ? InkWell(
+                                onTap: () {
+                                  Get.to(SubmissionsScreen(
+                                    grp_num: grp_num,
+                                    ideaExists: ideaExists,
+                                    status: status,
+                                  ));
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 20.0),
+                                  child: Card(
+                                    color: AppColors.yellow_accent,
+                                    elevation: 5.0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0)),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              (1 / 5),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 10.0),
+                                      decoration: BoxDecoration(
+                                          color: AppColors.yellow_accent,
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Submit your Idea',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Icon(
+                                            Icons.add_task_rounded,
+                                            size: 60,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ideaExists == "true" && status == "approved"
+                                ? ProgressWidget()
+                                : ideaExists == "true" && status == "rejected"
+                                    ? InkWell(
+                                        onTap: () {
+                                          Get.to(SubmissionsScreen(
+                                            grp_num: grp_num,
+                                            ideaExists: ideaExists,
+                                            status: status,
+                                          ));
+                                        },
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 20.0),
+                                          child: Card(
+                                            color: AppColors.yellow_accent,
+                                            elevation: 5.0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        20.0)),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  (1 / 5),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.0,
+                                                  vertical: 10.0),
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                      AppColors.yellow_accent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Submit your Idea',
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Icon(
+                                                    Icons.add_task_rounded,
+                                                    size: 60,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                      ],
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 }),
             Expanded(
                 child: FutureBuilder(
@@ -134,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                       return GetWeek(weekid: wid[index]);
                     });
               },
-            ))
+            )),
           ],
         ));
   }

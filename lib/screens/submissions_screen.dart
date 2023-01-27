@@ -166,9 +166,94 @@ class _SubmissionsScreenState extends State<SubmissionsScreen> {
                                           fontWeight: FontWeight.bold)),
                                 ],
                               )
-                            : Column(
-                                children: [Text('Loading')],
-                              )
+                            : widget.ideaExists == "true" &&
+                                    widget.status == "rejected"
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Your Idea has been",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.yellow_accent,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold)),
+                                      Text("rejected",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.red_text,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold)),
+                                      Text("Submit Again?",
+                                          style: GoogleFonts.poppins(
+                                              color: AppColors.yellow_accent,
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold)),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Titletext(),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Descriptiontext(),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      Bounce(
+                                        duration: Duration(milliseconds: 110),
+                                        onPressed: () async {
+                                          FirebaseFirestore.instance
+                                              .collection('meta')
+                                              .doc('project-ideas')
+                                              .update({
+                                            widget.grp_num: {
+                                              'pTitle':
+                                                  _titletextController.text,
+                                              'pDescription':
+                                                  _descriptiontextController
+                                                      .text,
+                                              'grp_id': widget.grp_num,
+                                              'status': 'pending'
+                                            }
+                                          });
+                                        },
+                                        child: Center(
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.6,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                1 /
+                                                15,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                color: AppColors.yellow_accent),
+                                            child: Center(
+                                              child: Bounce(
+                                                duration:
+                                                    Duration(milliseconds: 110),
+                                                onPressed: () {
+                                                  //do the auth control here
+                                                },
+                                                child: Text(
+                                                  'Post Idea',
+                                                  style: GoogleFonts.poppins(
+                                                      color: AppColors
+                                                          .black_background,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : CircularProgressIndicator()
                   ],
                 )),
           ))
